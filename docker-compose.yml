@@ -16,7 +16,7 @@ services:
       - POSTGRES_PASSWORD=eng_word
       - POSTGRES_DB=eng_word
       - POSTGRES_USER=eng_word
-      - '~/Shellscripts:/Shellscripts'
+      - '~/Shellscripts/reboot_container.sh:/Shellscripts'
     tty: true
     stdin_open: true
 

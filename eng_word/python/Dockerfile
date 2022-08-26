@@ -5,3 +5,4 @@ WORKDIR /code
 COPY . /code
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install pdfminer.six && pip install sqlalchemy
