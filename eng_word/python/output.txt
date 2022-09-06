@@ -1,36 +1,3 @@
-プログラミング必須英単語 600+
-v2019（2019 年 9 月 1 日更新）
-最新情報：https://progeigo.org/
-
-プログラミングをする際には、API リファレンスやソースコードのコメントなどを英語で読むことが求められます。場合によっ
-ては英語で関数名を付けたり、ちょっとしたマニュアルを書いたりする機会もあります。ただしプログラミング時に求められ
-る英単語は、一般的な英語で求められる英単語とは異なります。
-本必須英単語リストでは、プログラミング時に求められ、特に目にすることが多い英単語を以下のカテゴリーに分けて選定
-しています ( 注 1)。プログラミング英語の学習や知識確認にご活用ください。
-
-ベーシック 300 語。基本的な英単語または頻出する英単語
-
-※ プログラミング英語検定「ベーシック」および「アドバンスト」試験の語彙問題の出題範囲
-
-アドバンスト 300 語。やや高度な英単語またはたまに目にする英単語
-
-※ プログラミング英語検定「アドバンスト」試験の語彙問題の出題範囲
-
-前提英単語 100 語。ベーシック以前に覚えておくべき入門的な英単語
-
-略語 70 語。attr や val など頻繁に目にする略語
-
-頭字語 30 語。API や HTTP など頻繁に目にする頭字語
-
-予約語（参考） 代表的なプログラミング言語で用いられる予約語（キーワード）。参考用
-
-注 1：コーパス言語学の手法で 1,200 万語を超えるプログラミング関連資料（ソースコード、API リファレンス、マニュアルなど）から英単語を選定。
-
-© 2019 Globalization Design Institute
-制作者：合同会社グローバリゼーションデザイン研究所（https://globalization.co.jp/）
-本文書は「CC BY-NC-SA 4.0」ライセンス（https://creativecommons.org/licenses/by-nc-sa/4.0/）で利用可能です。同ライセンス以外での利用をご希望
-の方は制作者までご連絡ください。
-また、誤字などがあればプログラミング英語検定のサイトからフィードバックをいただけると幸いです。
 
 ベーシック 300
 
@@ -84,7 +51,7 @@ checkbox【名詞】チェックボックス
 
 1
 
-choice【名詞】選択
+choice【名詞】選択
 clear【動詞】消去する
 click【動詞】クリックする
 client【名詞】クライアント
@@ -231,7 +198,7 @@ I
 
 icon【名詞】アイコン
 
-ignore【動詞】無視する
+ignore【動詞】無視する
 image【名詞】画像、イメージ
 import【名詞／動詞】インポート／
 インポートする
@@ -379,7 +346,7 @@ request【名詞／動詞】要求、リクエ
 require【動詞】必要とする
 reset【動詞】リセットする
 
-ビュー
+ビュー
 
 W
 
@@ -488,7 +455,9 @@ view【動詞／名詞】表示する／表示、
 
 4
 
-A
+アドバンスト 300
+
+A
 
 abstract【形容詞】抽象的な
 accessibility【名詞】アクセシビリ
@@ -531,7 +500,7 @@ availability【名詞】可用性
 
 B
 
-アドバンスト 300
+
 
 batch【名詞】バッチ
 binary【形容詞】バイナリーの、二
@@ -621,7 +590,7 @@ disable【動詞】無効にする
 display【動詞／名詞】表示する／表
 示、画面
 
-distribute【動詞】分散する
+distribute【動詞】分散する
 dump【動詞】ダンプする
 duplicate【形容詞／動詞】重複する
 ／複製する
@@ -671,20 +640,16 @@ G
 
 generation【名詞】生成
 
-generic【形容詞】汎用の、ジェネリッ
-クの
+generic【形容詞】汎用の、ジェネリックの
 
 H
 
 hack【名詞／動詞】ハッキング、一
-時回避策／ハックする、（その場し
-のぎで）作る
-handle【動詞／名詞】処理する／ハ
-ンドル
+時回避策／ハックする、作る
+handle【動詞／名詞】処理する／ハンドル
 handler【名詞】ハンドラー
 handling【名詞】処理
-hash【名詞】ハッシュ、ハッシュ記
-号
+hash【名詞】ハッシュ、ハッシュ記号
 header【名詞】ヘッダー
 hierarchy【名詞】階層
 
@@ -693,16 +658,13 @@ I
 identifier【名詞】識別子
 implement【動詞】実装する
 implementation【名詞】実装
-incompatible【形容詞】互換性がな
-い
-increment【名詞／動詞】増分、イ
-ンクリメント／増分させる
+incompatible【形容詞】互換性がない
+increment【名詞／動詞】増分、インクリメント／増分させる
 indentation【名詞】インデント
 initial【形容詞】初期の、最初の
 initialization【名詞】初期化
 initialize【動詞】初期化する
-inline【形容詞／動詞】インライン
-の／インライン化する
+inline【形容詞／動詞】インラインの／インライン化する
 inner【形容詞】内部の、内側の
 insert【動詞】挿入する
 inspect【動詞】検査する
@@ -720,32 +682,24 @@ L
 latency【名詞】待ち時間
 launch【動詞】起動する、開始する
 listener【名詞】リスナー
-
-6
-
 load【動詞】読み込む
 locale【名詞】ロケール
 logic【名詞】ロジック、論理
-lookup【名詞】検索、探索、ルックアッ
-プ
+lookup【名詞】検索、探索、ルックアップ
 
 M
 
-manual【形容詞／名詞】手動の／マ
-ニュアル
+manual【形容詞／名詞】手動の／マニュアル
 manually【副詞】手動で
-map【名詞／動詞】地図／対応づけ
-る、マッピングする
+map【名詞／動詞】地図／対応づける、マッピングする
 master【名詞】マスター
-matching【形容詞】一致する、マッ
-チする
+matching【形容詞】一致する、マッチする
 maximum【形容詞】最大の
 metadata【名詞】メタデータ
 migration【名詞】移行
 millisecond【名詞】ミリ秒
 minimum【形容詞】最小の
-minor【形容詞】マイナーな、小さ
-な
+minor【形容詞】マイナーな、小さな
 mock【形容詞】モックの、模造の
 modification【名詞】修正、変更
 modifier【名詞】修飾子
@@ -758,12 +712,9 @@ N
 namespace【名詞】名前空間
 native【形容詞】ネイティブの
 navigate【動詞】移動する
-navigation【名詞】ナビゲーション、
-移動
-nested【形容詞】入れ子の、ネスト
-された
-normalize【動詞】標準化する、正規
-化する
+navigation【名詞】ナビゲーション、移動
+nested【形容詞】入れ子の、ネストされた
+normalize【動詞】標準化する、正規化する
 notification【名詞】通知
 notify【動詞】通知する
 numeric【形容詞】数値の
@@ -772,8 +723,7 @@ O
 
 obtain【動詞】取得する
 occurrence【名詞】出現、発生
-
-offset【名詞】オフセット
+offset【名詞】オフセット
 optimize【動詞】最適化する
 otherwise【副詞】さもないと
 overview【名詞】概要
@@ -790,14 +740,11 @@ persistence【名詞】永続化
 placeholder【名詞】プレースホルダー
 plugin【名詞】プラグイン
 populate【動詞】自動入力する
-preference【名詞】プリファレンス、
-ユーザー設定
+preference【名詞】プリファレンス、ユーザー設定
 preferred【形容詞】優先の
-prefix【名詞】接頭辞、プレフィック
-ス
+prefix【名詞】接頭辞、プレフィックス
 priority【名詞】優先順位
-private【形容詞】プライベートな、
-非公開の
+private【形容詞】プライベートな、非公開の
 progress【名詞】進行状況
 protocol【名詞】プロトコル
 prototype【名詞】プロトタイプ
@@ -812,36 +759,29 @@ queue【名詞】キュー、待ち行列
 R
 
 raw【形容詞】生の
-redirect【動詞】リダイレクトする、
-転送する
+redirect【動詞】リダイレクトする、転送する
 redundant【形容詞】冗長な
 refresh【動詞】更新する
 register【動詞】登録する
 registration【名詞】登録
 registry【名詞】レジストリー
-reload【動詞】再読み込みする、リロー
-ドする
-remote【形容詞】遠隔の、リモート
-
-の
+reload【動詞】再読み込みする、リロードする
+remote【形容詞】遠隔の、リモートの
 removal【名詞】削除、除去
-render【動詞】描画する、レンダリ
-ングする
+render【動詞】描画する、レンダリングする
 repository【名詞】リポジトリー
 represent【動詞】表す
 representation【名詞】表現
 reserve【動詞】予約する、確保する
 resize【動詞】サイズ変更する
-resolution【名詞】解像度、精度、
-解決
+resolution【名詞】解像度、精度、解決
 resolve【動詞】解決する
 restore【動詞】復元する
 restriction【名詞】制限
 retrieve【動詞】取得する
 revert【動詞】（以前の状態に）戻す
 revision【名詞】改訂、リビジョン
-runtime【名詞】実行時、ランタイ
-ム
+runtime【名詞】実行時、ランタイム
 
 S
 
@@ -849,15 +789,12 @@ sanitize【動詞】サニタイズする
 scale【動詞】（大きさを）変える
 schema【名詞】スキーマ
 scope【名詞】スコープ、範囲
-secure【形容詞】セキュアな、安全
-な
-separator【名詞】セパレーター、区
-切り
+secure【形容詞】セキュアな、安全な
+separator【名詞】セパレーター、区切り
 sequence【名詞】シーケンス
 serialize【動詞】シリアル化する
 session【名詞】セッション
-setup【名詞】設定、構成、セットアッ
-プ
+setup【名詞】設定、構成、セットアップ
 shutdown【名詞】シャットダウン
 signature【名詞】署名
 simplify【動詞】簡素化する
@@ -866,13 +803,8 @@ socket【名詞】ソケット
 specification【名詞】仕様
 split【動詞】分割する
 stack【名詞】スタック
-standalone【形容詞】スタンドアロ
-ンの
-startup【名詞】起動、スタートアッ
-
-7
-
-プ
+standalone【形容詞】スタンドアロンの
+startup【名詞】起動、スタートアップ
 static【形容詞】静的な
 storage【名詞】ストレージ
 stream【名詞】ストリーム
@@ -887,18 +819,15 @@ T
 terminate【動詞】終了する
 termination【名詞】終了
 terms【名詞】利用条件
-third party【名詞】サード・パー
-ティー、第三者
+third party【名詞】サード・パーティー、第三者
 thread【名詞】スレッド
 timestamp【名詞】タイムスタンプ
 todo【名詞】TODO、するべきこと
 toggle【動詞】切り替える
 token【名詞】トークン
-transaction【名詞】トランザクショ
-ン
+transaction【名詞】トランザクション
 transfer【動詞】転送する
-transform【動詞】変換する、変形す
-る
+transform【動詞】変換する、変形する
 transition【名詞】遷移
 trigger【動詞】トリガーする
 tweak【動詞】微調整する
@@ -914,20 +843,17 @@ unique【形容詞】一意の、固有の
 unknown【形容詞】不明の
 unnecessary【形容詞】不要な
 unresolved【形容詞】未解決の
-unsupported【形容詞】非対応の、
-サポートされない
+unsupported【形容詞】非対応の、サポートされない
 usage【名詞】利用、使用
 username【名詞】ユーザー名
 
 V
 
-valid【形容詞】有効な
+valid【形容詞】有効な
 validate【動詞】検証する
-validation【動詞】（妥当性を）確認
-する、検証する
+validation【動詞】確認する、検証する
 verbose【形容詞】詳細な
-verify【動詞】（正しいことを）確認
-する、認証する
+verify【動詞】確認する、認証する
 virtual【形容詞】仮想の
 visibility【名詞】可視性、可視範囲
 visible【形容詞】表示できる
@@ -935,8 +861,7 @@ visible【形容詞】表示できる
 W
 
 whitespace【名詞】空白、スペース
-wrap【動詞】ラップする、（テキス
-トを）折り返す
+wrap【動詞】ラップする、折り返す
 wrapper【名詞】ラッパー
 
 Z
@@ -946,8 +871,7 @@ zip【動詞】（ファイルを）圧縮する
 A
 
 action【名詞】アクション、操作
-activity【名詞】アクティビティー、
-活動
+activity【名詞】アクティビティー、活動
 add【動詞】追加する
 address【名詞】アドレス、住所
 agree【動詞】同意する
@@ -958,32 +882,26 @@ B
 below【副詞】下記に
 body【名詞】本体、本文
 break【動詞】中断する
-build【動詞／名詞】構築する／ビル
-ド
+build【動詞／名詞】構築する／ビルド
 button【名詞】ボタン
 
 C
 
 call【動詞】呼び出す
 change【動詞】変更する
-check【動詞】確認する、チェック
-する
+check【動詞】確認する、チェックする
 child【名詞】子
 choose【動詞】選択する
 class【名詞】クラス
-clean【形容詞／動詞】きれいな／き
-れいにする
+clean【形容詞／動詞】きれいな／きれいにする
 close【動詞】閉じる
 compare【動詞】比較する
 complete【動詞／形容詞】完了する
 
 前提英単語 100
 
-／完全な
-copy【動詞／名詞】コピーする／コ
-ピー
-correct【形容詞／動詞】正確な／訂
-正する
+copy【動詞／名詞】コピーする／コピー
+correct【形容詞／動詞】正確な／訂正する
 create【動詞】作成する
 
 D
@@ -994,8 +912,7 @@ detail【名詞】詳細
 
 E
 
-email【名詞／動詞】メール／メール
-を送る
+email【名詞／動詞】メール／メールを送る
 event【名詞】イベント、出来事
 example【名詞】例
 extra【形容詞】余分な、追加の
@@ -1015,8 +932,6 @@ G
 get【動詞】獲得する
 group【名詞】グループ
 
-8
-
 H
 
 health【名詞】ヘルス、正常性
@@ -1024,27 +939,24 @@ health【名詞】ヘルス、正常性
 I
 
 improve【動詞】改良する
-include【動詞】含む、インクルード
-する
+include【動詞】含む、インクルードする
 information【名詞】情報
-introduce【動詞】導入する、紹介す
-る
+introduce【動詞】導入する、紹介する
 
 J
 
 join【動詞】結合する
 
-key【名詞】キー
-
 K
+
+key【名詞】キー
 
 L
 
 language【名詞】言語
 later【副詞】あとで
 line【名詞】行、線
-list【名詞／動詞】リスト／一覧表示
-する
+list【名詞／動詞】リスト／一覧表示する
 
 M
 
@@ -1053,10 +965,7 @@ match【動詞】一致する
 menu【名詞】メニュー
 message【名詞】メッセージ
 model【名詞】モデル、型
-
-move【動詞】移動する
-
-S
+move【動詞】移動する
 
 N
 
@@ -1066,8 +975,7 @@ number【名詞】数
 
 O
 
-object【名詞】オブジェクト、物体、
-対象
+object【名詞】オブジェクト、物体、対象
 open【動詞／形容詞】開く／開いた
 
 P
@@ -1087,6 +995,8 @@ return【動詞】戻す、返す
 rule【名詞】ルール、規則
 run【動詞】実行する
 
+S
+
 section【名詞】セクション、部分
 see【動詞】見る
 send【動詞】送信する
@@ -1097,15 +1007,13 @@ size【名詞】大きさ
 software【名詞】ソフトウェア
 space【名詞】スペース、空白
 start【動詞】開始する
-statement【名詞】ステートメント、
-文
+statement【名詞】ステートメント、文
 stop【動詞】停止する
 style【名詞】スタイル
 
 T
 
-test【名詞／動詞】テスト／テスト
-する
+test【名詞／動詞】テスト／テストする
 traffic【名詞】トラフィック、通信量
 tree【名詞】木、ツリー
 true【形容詞】正しい、真の
@@ -1116,17 +1024,15 @@ use【動詞／名詞】使う／使用
 
 A
 
-addr  address の略
-admin  administrator の略
-app  application の略
-arg  argument の略
-args  arguments の略
-async  asynchronization（非同期）
-の略
-attr  attribute の略
-attrs  attributes の略
-auth  authorization（権限付与）、
-authentication の略
+addr  address
+admin  administrator
+app  application
+arg  argument
+args  arguments
+async  asynchronization=非同期
+attr  attribute
+attrs  attributes
+auth  authorization
 
 C
 
@@ -1134,32 +1040,31 @@ cert  certified（認定された）、
 
 略語 70
 
-certificate の略
-char  character の略
-cmd  command の略
-config  configuration の略
-conn  connection の略
-ctrl  Control キーの略
-cur  current、cursor の略
+certificate
+char  character
+cmd  command
+config  configuration
+conn  connection
+ctrl  Control キー
+cur  current、cursor
 
 D
 
-db  database の略
-deps  dependencies の略
-dest  destination の略
+db  database
+deps  dependencies
+dest  destination
 dev  developer、development
-の略
-dict  dictionary の略
 
-9
+dict  dictionary
+
+U
 
 useful【形容詞】便利な
 user【名詞】ユーザー
 
 V
 
-visit【動詞】訪問する、アクセスす
-る
+visit【動詞】訪問する、アクセスする
 
 W
 
@@ -1171,441 +1076,81 @@ write【動詞】書き込む
 Y
 
 you【代名詞】あなた、ユーザー
-your【代名詞】あなたの、ユーザー
-の
+your【代名詞】あなたの、ユーザーの
 
-diff  difference の略
-dir  directory の略
-doc  document の略
+diff  difference
+dir  directory
+doc  document
 
 E
 
-enum  enumeration の略
-env  environment の略
-err  error の略
-exec  execution の略
+enum  enumeration
+env  environment
+err  error
+exec  execution
 
 F
 
-fn   function の略
+fn   function
 
 G
 
-gen  generation の略
+gen  generation
 
-I
+I
 
-id   identification、identifier の
-略
-idx  index の略
-impl  implementation の略
-info  information の略
-init  initialization の略
-int  integer の略
+id   identification、identifier
+idx  index
+impl  implementation
+info  information
+init  initialization
+int  integer
 
 L
 
-lib  library の略
+lib  library
 
 M
 
-max  maximum の略
-min  minimum、minute の略
-msg  message の略
+max  maximum
+min  minimum、minute
+msg  message
 
 N
 
-num  number の略
+num  number
 
 O
 
-obj  object の略
-op  operation の略
-ops  operations の略
-opts  options の略
+obj  object
+op  operation
+ops  operations
+opts  options
 
 P
 
-A
-
-API  Application Programming 
-Interface のこと
-
-param  parameter の略
-params  parameters の略
-pos  position の略
-prev  previous の略
-prop  property の略
-props  properties の略
+param  parameter
+params  parameters
+pos  position
+prev  previous
+prop  property
+props  properties
 
 R
 
-ref  reference の略
-refs  references の略
-regex  regular expression の略
-repo  repository の略
-req  request の略
-res  response の略
-resp  response の略
-ret  return の略
+ref  reference
+refs  references
+regex  regular expression
+repo  repository
+req  request
+res  response
+resp  response
+ret  return
 
 S
 
-spec  specification の略
-src  source の略
-str  string の略
+spec  specification
+src  source
+str  string
 sync  synchronization（同期）の
 略
-
-T
-
-temp  temporary の略
-tmp  temporary の略
-
-頭字語 30
-
-DNS  Domain Name System のこ
-と
-DOM  Document Object Model の
-こと
-
-C
-
-H
-
-CI   Continuous Integration の
-こと
-CLI  Command Line Interface の
-こと
-CPU  Central Processing Unit の
-こと
-CSS  Cascading Style Sheet のこ
-と
-
-HTML  HyperText Markup 
-Language のこと
-HTTP  HyperText Transfer Protocol
-のこと
-HTTPS  HyperText Transfer Protocol 
-Secure のこと
-
-I
-
-D
-
-IDE  Integrated Development 
-
-10
-
-U
-
-usr  user の略
-utils  utilities（ユーティリティー）
-の略
-
-V
-
-val  value の略
-var  variable の略
-vars  variables の略
-
-Environment のこと
-IE   Id Est（ラテン語で「つま
-り」）、Internet Explorer のこと
-IO  Input/Output のこと
-IP   Internet Protocol のこと
-
-J
-
-JSON  JavaScript Object Notation
-のこと
-
-N
-
-NFC  Near Field Communication
-のこと
-
-O
-
-OS  Operating System のこと
-
-U
-
-X
-
-XML  eXtensible Markup 
-Language のこと
-
-R
-
-RE  Regular Expression のこと
-RGB  Red Green Blue のこと
-
-S
-
-SDK  Software Development Kit
-のこと
-SQL  Structured Query Language
-のこと
-SSH  Secure SHell のこと
-SSL  Secure Sockets Layer のこ
-と
-
-UI  User Interface のこと
-URI  Uniform Resource Identifier
-のこと
-URL  Uniform Resource Locator
-のこと
-
-V
-
-VM  Virtual Machine のこと
-
-W
-
-WIP  Work In Progress（作業中）
-のこと
-WWW  World Wide Web のこと
-
-予約語（参考）
-
-callable［PH］
-case［C#、J、JS、PH、R］
-catch［C#、J、JS、PH］
-char［C#、J］
-checked［C#］
-class［C#、J、JS、PH、Py、R］
-clone［PH］
-const［C#、J、PH］
-continue［C#、J、JS、PH、Py］
-
-D
-
-debugger［JS］
-decimal［C#］
-declare［PH］
-def［Py、R］
-default［C#、J、JS、PH］
-defined?［R］
-del［Py］
-delegate［C#］
-delete［JS］
-die()［PH］
-do［C#、J、JS、PH、R］
-double［C#、J］
-
-言語名の省略一覧
-J：Java
-JS：JavaScript（ECMAScript）
-PH：PHP
-Py：Python
-R：Ruby
-※アンダースコア（_）で始まる語
-など一部は不掲載
-
-A
-
-abstract［C#、PH、J］
-alias［R］
-and［PH、Py、R］
-array()［PH］
-as［C#、PH、Py］
-assert［J、Py］
-async［Py］
-await［Py］
-
-B
-
-base［C#］
-bool［C#、PH］
-boolean［J］
-break［C#、J、JS、PH、Py、R］
-byte［C#、J］
-
-C
-
-echo［PH］
-elif［Py］
-
-E
-
-11
-
-else［C#、J、JS、PH、Py、R］
-elseif［PH］
-elsif［R］
-empty()［PH］
-enddeclare［PH］
-endfor［PH］
-endforeach［PH］
-endif［PH］
-endswitch［PH］
-endwhile［PH］
-ensure［R］
-enum［C#、J、JS］
-eval()［PH］
-event［C#］
-except［Py］
-exit()［PH］
-explicit［C#］
-export［JS］
-extends［J、JS、PH］
-extern［C#］
-
-F
-
-false［C#、JS、PH、R］
-final［J、PH］
-finally［C#、J、JS、PH、Py］
-fixed［C#］
-float［C#、J、PH］
-
-trait［PH］
-transient［J］
-true［C#、JS、PH、R］
-try［C#、J、JS、PH、Py］
-typeof［C#、JS］
-
-U
-
-uint［C#］
-ulong［C#］
-unchecked［C#］
-undef［R］
-unless［R］
-unsafe［C#］
-unset()［PH］
-until［R］
-use［PH］
-ushort［C#］
-using［C#］
-using static［C#］
-
-V
-
-var［JS、PH］
-virtual［C#］
-void［C#、J、JS、PH］
-volatile［C#、J］
-
-W
-
-when［R］
-while［C#、J、JS、PH、Py、R］
-with［JS、Py］
-
-xor［PH］
-
-X
-
-Y
-
-yield［JS、PH、Py、R］
-yield from［PH］
-
-for［C#、J、JS、PH、Py、R］
-foreach［C#、PH］
-from［Py］
-function［JS、PH］
-
-G
-
-global［PH、Py］
-goto［C#、J、PH］
-
-I
-
-if［C#、J、JS、PH、Py、R］
-implements［J、JS、PH］
-implicit［C#］
-import［J、JS、Py］
-in［#C、JS、Py、R］
-include［PH］
-include_once［PH］
-instanceof［J、JS、PH］
-insteadof［PH］
-int［C#、J、PH］
-interface［C#、J、JS、PH］
-internal［C#］
-is［C#、Py］
-isset()［PH］
-iterable［PH］
-
-lambda［Py］
-let［JS］
-list()［PH］
-lock［C#］
-long［C#、J］
-
-module［R］
-
-L
-
-M
-
-N
-
-namespace［C#、PH］
-native［J］
-new［C#、J、JS、PHP］
-next［R］
-nil［R］
-None［Py］
-nonlocal［Py］
-not［Py、R］
-null［C#、JS、PH］
-
-operator［C#］
-or［PH、Py、R］
-out［C#］
-override［C#］
-
-O
-
-P
-
-params［C#］
-pass［Py］
-print［PH］
-private［C#、J、JS、PH］
-protected［C#、J、JS、PH］
-public［C#、J、JS、PH］
-
-R
-
-raise［Py］
-readonly［C#］
-redo［R］
-ref［C#］
-require［PH］
-require_once［PH］
-rescue［R］
-retry［R］
-return［C#、J、JS、PH、Py、R］
-
-S
-
-sbyte［C#］
-sealed［C#］
-self［R］
-short［C#、J］
-sizeof［C#］
-stackalloc［C#］
-static［C#、J、JS、PH］
-strictfp［J］
-string［C#、PH］
-struct［C#］
-super［J、JS、R］
-switch［C#、J、JS、PH］
-synchronized［J］
-
-T
-
-then［R］
-this［C#、J、JS］
-throw［C#、J、JS、PH］
-throws［J］
-
-12
-
-

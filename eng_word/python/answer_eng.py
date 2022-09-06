@@ -5,6 +5,8 @@ from pdfminer.layout import LAParams
 from pdfminer.pdfinterp import PDFPageInterpreter, PDFResourceManager
 from pdfminer.pdfpage import PDFPage
 
+import adjust_text
+
 
 class Decision_To_InjectDB(object):
     """このクラスはPdf_Operatorクラスのコンストラクタ内でjudgeを求める際に使用する。
@@ -21,7 +23,7 @@ class Decision_To_InjectDB(object):
         """
         found = 1
         not_found = 0
-        result = os.path.exists("./output.txt")
+        result = os.path.exists("output.txt")
         print(result, "result")
         if result:
             return found
@@ -31,7 +33,7 @@ class Decision_To_InjectDB(object):
 
 class Pdf_Operator(object):
     already_get_data = None
-    input_file = "./essential-programming-words.pdf"
+    input_file = "essential-programming-words.pdf"
 
     def __init__(self, file=input_file, judge=already_get_data) -> None:
         self.file = file
@@ -52,10 +54,14 @@ class Pdf_Operator(object):
                         interpreter.process_page(page)
 
 
+class TextOperator(object):
+    """pdfから抽出したテキストに対して操作を行い、DBに注入できる綺麗な形にする
+    """
+    adjust_text.main()
+
+
 decision_object = Decision_To_InjectDB()
 result = decision_object.explore_data()
 
 pdf_operator = Pdf_Operator(judge=result)
 pdf_operator.fetch_word()
-
-print()
