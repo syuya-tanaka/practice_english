@@ -6,6 +6,12 @@ class Convert_Text_To_Save(object):
     def __init__(self, file: str) -> None:
         self.file = file
         self.result = self.string_formatting()
+        self.extract_eng: list[str] = list()
+
+    def get_extract_eng(self):
+        self.get_extracted_per_cat()
+        self.make_basic_list()
+        self.make_advanced_list()
 
     def string_formatting(self) -> str:
         """Return a rough string to extract.
@@ -43,7 +49,7 @@ class Convert_Text_To_Save(object):
         self.acronym_text = self.result[cat_addr[2]:]
         return self.basic_text, self.adv_text, self.acronym_text
 
-    def make_basic_list(self) -> list:
+    def make_basic_list(self) -> None:
         """Create a basic list and return the sorted.
 
         Returns:
@@ -51,11 +57,9 @@ class Convert_Text_To_Save(object):
         """
         basic_eng = re.findall("[a-z]+", self.basic_text)
         basic_eng = sorted(basic_eng)
-        # print(basic_eng)
-        print(len(basic_eng))
-        return basic_eng
+        self.extract_eng.append(basic_eng)
 
-    def make_advanced_list(self) -> list:
+    def make_advanced_list(self) -> None:
         """Create a advanced list and return the sorted
 
         Returns:
@@ -63,9 +67,7 @@ class Convert_Text_To_Save(object):
         """
         adv_eng = re.findall("[a-z]+", self.adv_text)
         adv_eng = sorted(adv_eng)
-        # print(advanced_eng)
-        print(len(adv_eng))
-        return adv_eng
+        self.extract_eng.append(adv_eng)
 
 
 def main() -> None:
