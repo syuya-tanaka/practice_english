@@ -2,4 +2,5 @@ essential-programming-words.pdf
 *.pyc
 .mypy_cache
 .DS_Store
+output.txt
 

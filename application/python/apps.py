@@ -8,15 +8,14 @@ from pdfminer.layout import LAParams
 from pdfminer.pdfinterp import PDFPageInterpreter, PDFResourceManager
 from pdfminer.pdfpage import PDFPage
 
-import adjust_text
+import extract
 
 
 class Decision_To_InjectDB(object):
     """このクラスはPdf_Operatorクラスのコンストラクタ内でjudgeを求める際に使用する。
 
     Args:
-        object (_type_): _description_
-    """
+        object (_type_): _description_ """
 
     def explore_data(self) -> int:
         """output.txtの有無と、DBに入り、データの有無を確認しにいく。
@@ -27,11 +26,15 @@ class Decision_To_InjectDB(object):
         found = 1
         not_found = 0
         result = os.path.exists("output.txt")
-        print(result, "result")
         if result:
             return found
         else:
             return not_found
+
+# TODO Decision_To_InjectDBクラスをPdf_Operatorクラスに継承する。
+# TODO configparserを使用して、DBサーバーとの通信を可能にする。
+# TODO loggingの使用。
+# TODO 非同期処理の使用。
 
 
 class Pdf_Operator(object):
@@ -105,12 +108,12 @@ class TranslateOperator(object):
 
 
 def main() -> None:
+    # ここ内部、またはどこかで、既にデータが存在する場合の処理も書いておく
     decision_object = Decision_To_InjectDB()
-    result = decision_object.explore_data()
-
-    pdf_operator = Pdf_Operator(judge=result)
+    judge = decision_object.explore_data()
+    pdf_operator = Pdf_Operator(judge=judge)
     pdf_operator.fetch_word()
-    raw_phrase = adjust_text.Convert_Text_To_Save("output.txt")
+    raw_phrase = extract.Convert_Text_To_Save("output.txt")
     phrase = raw_phrase.get_extract_eng()
     trans_object = TranslateOperator(phrase, "en", "ja")
     trans_object.trans_and_put_in_db_eng_to_jpn(part=0)
