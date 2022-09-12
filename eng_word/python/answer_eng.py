@@ -1,7 +1,6 @@
 from functools import wraps
-
 import os
-from typing import Generator
+from typing import Any, Callable, Generator
 
 import translators as ts
 from pdfminer.converter import TextConverter
@@ -46,6 +45,7 @@ class Pdf_Operator(object):
 
     def fetch_word(self) -> None:
         if not self.judge:
+            # TODO DBのテーブルなり、データを入れるまでに必要な処理を裏で走らせる処理のfunc()
             with open(self.file, "rb") as input:
                 with open("output.txt", "w") as output:
                     laparams = LAParams(char_margin=20, line_margin=1)
@@ -58,35 +58,50 @@ class Pdf_Operator(object):
                         interpreter.process_page(page)
 
 
+def inject_data(func) -> Callable:
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        print("Inject into DB from now on")
+        result = func(self, *args, **kwargs)
+        print(self.ja_list)
+        # TODO Here we will actually inject into the DB.
+        print("Fully Completed")
+        return result
+    return wrapper
+
+
 class TranslateOperator(object):
     """pdfから抽出したデータを翻訳し、DBに注入する"""
 
-    def __init__(self, phrase, from_lang, to_lang) -> None:
+    def __init__(self, phrase: list, from_lang: str, to_lang: str) -> None:
         self.phrase = phrase
         self.from_lang = from_lang
         self.to_lang = to_lang
-
-    def inject_data(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            print("Inject into DB from now on")
-            result = func(*args, **kwargs)
-            # TODO Here we will actually inject into the DB.
-            print("Fully Completed")
-            return result
-        return wrapper
+        self.ja_list: list = list()
 
     def _extract_raw_data(self, part: int) -> Generator:
         for i in range(len(self.phrase[part])):
             yield self.phrase[part][i]
 
     @inject_data
-    def trans_eng_to_jpn(self, part):
+    def trans_and_put_in_db_eng_to_jpn(self, part: int) -> Any:
+        """英語から日本語に翻訳してDBに入れる。
+
+        Args:
+            part (int): self.phrase[0] or self.phrase[1] only
+
+        Returns:
+            Any: 最終的に返す値はまだ未定。多分DBからランダムに返すようにする。
+        """
         for phrase in self._extract_raw_data(part):
-            phrase = str(phrase)
             print(phrase)
+            # 1 section=抽出したphraseをgoogle-apiに投げて、self.ja_listにappend()
             trans_jpn = ts.google(phrase, self.from_lang, self.to_lang)
-            # 非同期処理でDBに入力をする。
+            self.ja_list.append(trans_jpn)
+            # TODO 2 section=phraseとtrans_jpnをDBに入れる。
+        return self.ja_list
+        # 日本語だけをリスト化してまとめそれをリターンする。
+        # 非同期処理でDBに入力をする処理と、translate apiを使用する処理を分ける。
 
 
 def main() -> None:
@@ -95,10 +110,10 @@ def main() -> None:
 
     pdf_operator = Pdf_Operator(judge=result)
     pdf_operator.fetch_word()
-    phrase = adjust_text.Convert_Text_To_Save("output.txt")
-    phrase.get_extract_eng()
-    trans_object = TranslateOperator(phrase.extract_eng, "en", "ja")
-    trans_object.trans_eng_to_jpn(0)
+    raw_phrase = adjust_text.Convert_Text_To_Save("output.txt")
+    phrase = raw_phrase.get_extract_eng()
+    trans_object = TranslateOperator(phrase, "en", "ja")
+    trans_object.trans_and_put_in_db_eng_to_jpn(part=0)
     # trans_object.trans_eng_to_jpn(1)
 
 

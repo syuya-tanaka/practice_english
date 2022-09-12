@@ -1,1 +1,5 @@
-eng_word/python/essential-programming-words.pdf
+essential-programming-words.pdf
+*.pyc
+.mypy_cache
+.DS_Store
+

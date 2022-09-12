@@ -8,10 +8,11 @@ class Convert_Text_To_Save(object):
         self.result = self.string_formatting()
         self.extract_eng: list[str] = list()
 
-    def get_extract_eng(self):
+    def get_extract_eng(self) -> list[str]:
         self.get_extracted_per_cat()
         self.make_basic_list()
         self.make_advanced_list()
+        return self.extract_eng
 
     def string_formatting(self) -> str:
         """Return a rough string to extract.
