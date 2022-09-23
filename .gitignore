@@ -3,4 +3,5 @@ essential-programming-words.pdf
 .mypy_cache
 .DS_Store
 output.txt
+log.log
 
