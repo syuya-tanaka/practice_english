@@ -6,7 +6,7 @@ LOGGING_CONFIG = {
     'version': 1,
     'formatters': {
         'standard': {
-            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+            'format': '%(asctime)s [%(levelname)s] %(name)s:%(threadName)s %(message)s'
         },
     },
     'handlers': {

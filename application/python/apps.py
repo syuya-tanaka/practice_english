@@ -2,6 +2,8 @@ from functools import wraps
 import logging
 import logging.config
 import os
+import threading
+import time
 from typing import Any, Callable, Generator
 
 import translators as ts
@@ -14,32 +16,39 @@ import extract
 import logging_conf
 
 
+INPUT_FILE = 'essential-programming-words.pdf'
+OUTPUT_FILE = 'output.txt'
+RAW_DATA_1: dict = dict()
+RAW_DATA_2: dict = dict()
+DATA_TO_INJECT_DB: list = [RAW_DATA_1, RAW_DATA_2]
+
 logging.config.dictConfig(logging_conf.LOGGING_CONFIG)
 logger = logging.getLogger('apps')
 
 
-class Decision_To_InjectDB(object):
+class Confirm_To_Inject_To_Db(object):
     """DBにデータを入れるかを判断するクラス。
 
     Args:
         object (_type_): _description_ """
 
-    def explore_data(self) -> int:
+    @staticmethod
+    def explore_data() -> int:
         """output.txtの有無を確認する。
 
         Returns:
             int: 0 or 1
         """
-        found = 1
-        not_found = 0
-        result = os.path.exists("output.txt")
+        result = os.path.exists(OUTPUT_FILE)
         if result:
-            return found
+            return 1
         else:
-            return not_found
+            return 0
 
-    def explore_db(self) -> None:
-        """dbの有無を確認をし、存在しなければ作成をする。
+    @staticmethod
+    # TODO マルチプロセスで作成する。実行順番優先度高め。
+    def explore_db() -> None:
+        """dbの有無を確認し、存在しなければ作成をする。
 
         Returns:
             int: 0 or 1
@@ -54,13 +63,13 @@ class Decision_To_InjectDB(object):
 
 
 class Pdf_Operator(object):
-    already_get_data = None
-    input_file = 'essential-programming-words.pdf'
+    already_get_data = Confirm_To_Inject_To_Db.explore_data()
+    input_file = INPUT_FILE
 
     def __init__(self, file=input_file, judge=already_get_data) -> None:
         self.file = file
         self.judge = judge
-        self.output = 'output.txt'
+        self.output = OUTPUT_FILE
 
     def fetch_word(self) -> None:
         if not self.judge:
@@ -87,12 +96,11 @@ class Pdf_Operator(object):
                 })
 
 
-def inject_data(func) -> Callable:
+def inject_data(func: Callable) -> Callable:
     @wraps(func)
     def wrapper(self, *args, **kwargs):
         print('Inject into DB from now on')
         result = func(self, *args, **kwargs)
-        print(self.ja_list)
         # TODO Here we will actually inject into the DB.
         print('Fully Completed')
         return result
@@ -102,55 +110,62 @@ def inject_data(func) -> Callable:
 class TranslateOperator(object):
     """pdfから抽出したデータを翻訳し、DBに注入する"""
 
-    def __init__(self, phrase: list, from_lang: str, to_lang: str) -> None:
-        self.phrase = phrase
+    def __init__(self, raw_data: list, from_lang: str, to_lang: str) -> None:
+        self.raw_data = raw_data
         self.from_lang = from_lang
         self.to_lang = to_lang
         self.ja_list: list = list()
 
-    def _extract_raw_data(self, part: int) -> Generator:
-        for i in range(len(self.phrase[part])):
-            yield self.phrase[part][i]
+    def _extract_eng_word(self, part: int, count: int) -> Generator:
+        yield self.raw_data[part][count]
 
-    @inject_data
-    def trans_and_put_in_db_eng_to_jpn(self, part: int) -> Any:
+    def trans_eng_to_jpn(self, part: int, count: int) -> None:
+        for eng_word in self._extract_eng_word(part, count):
+            logger.debug({
+                'action': 'translate',
+                'eng_word': eng_word,
+                'part': part,
+                'status': 'run'
+            })
+            after_trans = ts.google(eng_word, self.from_lang, self.to_lang)
+            DATA_TO_INJECT_DB[part][eng_word] = after_trans
+
+    def trans_and_put_in_db_eng_to_jpn(self) -> Any:
         """英語から日本語に翻訳してDBに入れる。
 
         Args:
-            part (int): self.phrase[0] or self.phrase[1] only
+            part (int): self.raw_data[0] or self.raw_data[1] only
 
         Returns:
             Any: 最終的に返す値はまだ未定。多分DBからランダムに返すようにする。
         """
-        logger.debug({
-            'action': 'translate',
-            'phrase': self.phrase,
-            'from_lang': self.from_lang,
-            'to_lang': self.to_lang,
-            'status': 'run'
-        })
-        for phrase in self._extract_raw_data(part):
-            print(phrase)
-            # 1 section=抽出したphraseをgoogle-apiに投げて、self.ja_listにappend()
-            trans_jpn = ts.google(phrase, self.from_lang, self.to_lang)
-            self.ja_list.append(trans_jpn)
-            # TODO 2 section=phraseとtrans_jpnをDBに入れる。
+        # TODO part=0, part=1をマルチプロセスで処理する。
+        t1 = time.time()
+        for part in range(len(self.raw_data)):
+            for eng_word_count in range(len(self.raw_data[part])):
+                t = threading.Thread(target=self.trans_eng_to_jpn,
+                                     args=(part, eng_word_count))
+                t.start()
+            for thread in threading.enumerate():
+                if thread is threading.currentThread():
+                    continue
+                thread.join()
+                # TODO 2 section=phraseとtrans_jpnをDBに入れる。
+                # 非同期処理でDBに入力をする処理と、translate apiを使用する処理を分ける。
+        logger.debug(f'DATA_TO_INJECT_DB: {DATA_TO_INJECT_DB}')
+        result_time = time.time() - t1
+        print(result_time)
         return self.ja_list
-        # 日本語だけをリスト化してまとめそれをリターンする。
-        # 非同期処理でDBに入力をする処理と、translate apiを使用する処理を分ける。
 
 
 def main() -> None:
     # ここ内部、またはどこかで、既にデータが存在する場合の処理も書いておく
-    decision_object = Decision_To_InjectDB()
-    judge = decision_object.explore_data()
-    pdf_operator = Pdf_Operator(judge=judge)
+    pdf_operator = Pdf_Operator()
     pdf_operator.fetch_word()
-    raw_phrase = extract.Convert_Text_To_Save('output.txt')
-    phrase = raw_phrase.get_extract_eng()
-    trans_object = TranslateOperator(phrase, 'en', 'ja')
-    trans_object.trans_and_put_in_db_eng_to_jpn(part=0)
-    # trans_object.trans_eng_to_jpn(1)
+    raw_data = extract.Convert_Text_To_Save(OUTPUT_FILE)
+    formatted_data = raw_data.get_extract_eng()
+    trans_object = TranslateOperator(formatted_data, 'en', 'ja')
+    trans_object.trans_and_put_in_db_eng_to_jpn()
 
 
 if __name__ == '__main__':
