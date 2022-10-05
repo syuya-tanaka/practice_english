@@ -1,17 +1,17 @@
 version: '3'
 # 最終的には、名前付きボリュームは使うが土台を作り上げてから有効にする。
 # volumes:
-#   eng_word_data:
+#   application_data:
 
 services:
 
   db:
-    build: ./eng_word/postgresql
+    build: ./application/postgresql
     container_name: eng_word_db
     ports:
       - '4532:5432'
     # volumes:
-    #   - 'eng_word_data:/var/lib/postgresql/data'
+    #   - 'application_data:/var/lib/postgresql/data'
     environment:
       - POSTGRES_PASSWORD=eng_word
       - POSTGRES_DB=eng_word
@@ -21,12 +21,12 @@ services:
     stdin_open: true
 
   python:
-    build: ./eng_word/python
+    build: ./application/python
     container_name: eng_word_app
     ports:
       - '8001:8000'
     volumes:
-      - './eng_word/python:/code'
+      - './application/python:/code'
     depends_on:
       - db
     tty: true

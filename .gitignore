@@ -1,7 +1,10 @@
 essential-programming-words.pdf
+__pycache__
 *.pyc
 .mypy_cache
 .DS_Store
 output.txt
+extracted_text.txt
 log.log
+
 

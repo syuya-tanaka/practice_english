@@ -2,81 +2,44 @@
 import re
 
 
-class Convert_Text_To_Save(object):
+class Extract_To_Translate(object):
     def __init__(self, file: str) -> None:
         self.file = file
-        self.result = self.string_formatting()
-        self.extract_eng: list[str] = list()
 
-    def get_extract_eng(self) -> list[str]:
-        self.get_extracted_per_cat()
-        self.make_basic_list()
-        self.make_advanced_list()
-        return self.extract_eng
+    def remove_unneeded(self, s_line: int, e_line: int) -> str:
+        """s_line行からe_line行までの間を他のファイルに書き込む。
 
-    def string_formatting(self) -> str:
-        """Return a rough string to extract.
+        Args:
+            s_line (int): First line to start extracting.
+            e_line (int): Last line to end extracting.
 
         Returns:
-            str: The rough string.
+            str: New file completed.
         """
-        with open(self.file, "r") as text:
-            text_object = text.read()
-        result = re.sub("【.*】", " ", text_object)
-        result = re.sub("^/d", " ", result)
-        result = re.sub("\d", "", result)
-        result = re.sub("\W", "", result)
-        result = re.sub("[A-Z]", "", result)
-        result = result.replace("／", " ")
-        result = result.replace("、", " ")
-        result = result.replace("\n", "")
-        return result
+        start_line = s_line
+        end_line = e_line
+        count = 0
+        extracted_data = ""
+        self.new_txt_file = "extracted_text.txt"
+        with open(self.file, "r") as raw_file:
+            for line in raw_file:
+                count += 1
+                if start_line <= count <= end_line:
+                    extracted_data += line
+            with open(self.new_txt_file, "w") as new_file:
+                new_file.write(extracted_data)
+        return self.new_txt_file
 
-    def get_extracted_per_cat(self) -> tuple:
-        """Return the extract for each category.
-
-        Returns:
-            str: Three things extracted for each category.
+    def extract_eng(self, *args, **kwargs) -> list[str]:
+        """translatorに渡す事ができる形に抽出する。
         """
-        cat_list = ["ベーシック", "アドバンスト", "略語"]
-        cat_addr = []
-        basic_diff = 1
-        adv_diff = 154
-        for i in range(len(cat_list)):
-            found_addr = self.result.find(cat_list[i])
-            cat_addr.append(found_addr)
-        self.basic_text = self.result[cat_addr[0]: cat_addr[1] - basic_diff]
-        self.adv_text = self.result[cat_addr[1]: cat_addr[2] - adv_diff]
-        self.acronym_text = self.result[cat_addr[2]:]
-        return self.basic_text, self.adv_text, self.acronym_text
+        self.remove_unneeded(*args, **kwargs)
+        with open(self.new_txt_file, "rt") as src_file:
+            src_text = src_file.read()
+            processed_file = re.sub("\d", "", src_text)
+            processed_file = re.sub("\W", "", processed_file)
+            processed_file = re.sub("[A-Z]", "", processed_file)
+            result_file = re.findall("[a-z]+", processed_file)
+            return result_file
 
-    def make_basic_list(self) -> None:
-        """Create a basic list and return the sorted.
-
-        Returns:
-            list: List of sorted basic strings.
-        """
-        basic_eng = re.findall("[a-z]+", self.basic_text)
-        basic_eng = sorted(basic_eng)
-        self.extract_eng.append(basic_eng)
-
-    def make_advanced_list(self) -> None:
-        """Create a advanced list and return the sorted
-
-        Returns:
-            list: List of sorted advanced strings.
-        """
-        adv_eng = re.findall("[a-z]+", self.adv_text)
-        adv_eng = sorted(adv_eng)
-        self.extract_eng.append(adv_eng)
-
-
-def main() -> None:
-    text = Convert_Text_To_Save("output.txt")
-    text.get_extracted_per_cat()
-    text.make_basic_list()
-    text.make_advanced_list()
-
-
-if __name__ == "__main__":
-    main()
+# サンプルではs_line=30, e_line=949
