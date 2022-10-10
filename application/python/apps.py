@@ -25,7 +25,7 @@ logging.config.dictConfig(logging_conf.LOGGING_CONFIG)
 logger = logging.getLogger('apps')
 
 
-class Confirm_To_Inject_To_Db(object):
+class Referee(object):
     """DBにデータを入れるかを判断するクラス。
 
     Args:
@@ -64,8 +64,8 @@ class Confirm_To_Inject_To_Db(object):
 # TODO 非同期処理の使用。
 
 
-class Pdf_Operator(object):
-    already_get_data = Confirm_To_Inject_To_Db.explore_data()
+class PdfOperator(Referee):
+    already_get_data = Referee.explore_data()
     input_file = INPUT_FILE
 
     def __init__(self, file=input_file, judge=already_get_data) -> None:
@@ -150,16 +150,16 @@ class TranslateOperator(object):
             thread.join()
         taken_time = time.time() - start
         logger.debug(f'DATA_TO_INJECT_DB: {DATA_TO_INJECT_DB}\
-                       TAKEN_TIME: {taken_time}')
-        print(len(DATA_TO_INJECT_DB))
+                       TAKEN_TIME: {taken_time}\
+                       WORD_COUNT: {len(DATA_TO_INJECT_DB)}')
 
 
 def main() -> None:
     # TODO ここ内部、またはどこかで、既にデータが存在する場合の処理も書いておく
-    pdf_operator = Pdf_Operator()
+    pdf_operator = PdfOperator()
     pdf_operator.fetch_word()
-    raw_data = extract.Extract_To_Translate(OUTPUT_FILE)
-    formatted_data = raw_data.extract_eng(30, 949)
+    raw_data = extract.Extractor(OUTPUT_FILE)
+    formatted_data = raw_data.extract_eng(30, 1004)
     trans_object = TranslateOperator(formatted_data, 'en', 'ja')
     trans_object.trans_and_put_in_db_eng_to_jpn(queue)
 

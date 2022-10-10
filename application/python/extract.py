@@ -2,7 +2,7 @@
 import re
 
 
-class Extract_To_Translate(object):
+class Extractor(object):
     def __init__(self, file: str) -> None:
         self.file = file
 
@@ -42,4 +42,4 @@ class Extract_To_Translate(object):
             result_file = re.findall("[a-z]+", processed_file)
             return result_file
 
-# サンプルではs_line=30, e_line=949
+# サンプルではs_line=30, e_line=1004
