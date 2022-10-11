@@ -25,7 +25,7 @@ logging.config.dictConfig(logging_conf.LOGGING_CONFIG)
 logger = logging.getLogger('apps')
 
 
-class Referee(object):
+class Explorer(object):
     """DBにデータを入れるかを判断するクラス。
 
     Args:
@@ -64,8 +64,8 @@ class Referee(object):
 # TODO 非同期処理の使用。
 
 
-class PdfOperator(Referee):
-    already_get_data = Referee.explore_data()
+class PdfOperator(Explorer):
+    already_get_data = Explorer.explore_data()
     input_file = INPUT_FILE
 
     def __init__(self, file=input_file, judge=already_get_data) -> None:
@@ -121,6 +121,7 @@ class TranslateOperator(object):
                 pass
             except HTTPError:
                 print('Exceeded the daily API usage count today.')
+                break
 
     def set_eng_jpn_to_dict(self, eng_word, jpn_word) -> None:
         DATA_TO_INJECT_DB[eng_word] = jpn_word
@@ -149,9 +150,11 @@ class TranslateOperator(object):
                 continue
             thread.join()
         taken_time = time.time() - start
-        logger.debug(f'DATA_TO_INJECT_DB: {DATA_TO_INJECT_DB}\
-                       TAKEN_TIME: {taken_time}\
-                       WORD_COUNT: {len(DATA_TO_INJECT_DB)}')
+        logger.debug({
+                      'DATA_TO_INJECT_DB': DATA_TO_INJECT_DB,
+                      'TAKEN_TIME': taken_time,
+                      'WORD_COUNT': len(DATA_TO_INJECT_DB)
+                    })
 
 
 def main() -> None:

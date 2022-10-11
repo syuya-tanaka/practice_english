@@ -1,3 +1,4 @@
 pdfminer.six==20220524
 sqlalchemy==1.4.41
+psycopg2
 translators==5.4.2
