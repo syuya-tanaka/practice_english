@@ -81,10 +81,12 @@ class PdfOperator(Explorer):
                 'judge': self.judge,
                 'status': 'run'
             })
+
             with open(OUTPUT_FILE, 'wt') as output_file:
                 laparams = LAParams(char_margin=2, line_margin=5)
                 converted_pdf = extract_text(INPUT_FILE, laparams=laparams)
                 output_file.write(converted_pdf)
+
             logger.info({
                 'action': 'extract from pdf',
                 'judge': self.judge,
@@ -107,16 +109,12 @@ class TranslateOperator(object):
 
     def trans_eng_to_jpn(self, count: int, queue) -> None:
         for eng_word in self._extract_eng_word(count):
-            logger.debug({
-                'action': 'translate',
-                'eng_word': eng_word,
-                'status': 'run'
-                })
             try:
                 jpn_word = ts.google(eng_word, self.from_lang, self.to_lang)
                 queue.put(eng_word)
                 queue.put(jpn_word)
                 self.set_eng_jpn_to_dict(eng_word, jpn_word)
+
             except (ConnectionError, RemoteDisconnected, ProtocolError):
                 pass
             except HTTPError:
@@ -125,12 +123,6 @@ class TranslateOperator(object):
 
     def set_eng_jpn_to_dict(self, eng_word, jpn_word) -> None:
         DATA_TO_INJECT_DB[eng_word] = jpn_word
-        logger.debug({
-                     'action': 'translate',
-                     'eng_word': eng_word,
-                     'jpn_word': jpn_word,
-                     'status': 'success'
-                     })
 
     def trans_and_put_in_db_eng_to_jpn(self, queue) -> Any:
         """英語から日本語に翻訳してDBに入れる。
@@ -145,10 +137,20 @@ class TranslateOperator(object):
             translate_thread = threading.Thread(target=self.trans_eng_to_jpn,
                                                 args=(word_count, queue))
             translate_thread.start()
+
+            logger.debug({
+                'action': 'translate',
+                'count': word_count,
+                'status': 'run'
+            })
+            if word_count == self.word_count - 1:
+                print('待ちの時間だよ！')
+
         for thread in threading.enumerate():
             if thread is threading.currentThread():
                 continue
             thread.join()
+
         taken_time = time.time() - start
         logger.debug({
                       'DATA_TO_INJECT_DB': DATA_TO_INJECT_DB,
