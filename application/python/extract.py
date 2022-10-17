@@ -7,7 +7,7 @@ class Extractor(object):
         self.file = file
 
     def remove_unneeded(self, s_line: int, e_line: int) -> str:
-        """s_line行からe_line行までの間を他のファイルに書き込む。
+        """Write lines from s_line to e_line to another file.
 
         Args:
             s_line (int): First line to start extracting.
@@ -31,8 +31,7 @@ class Extractor(object):
         return self.new_txt_file
 
     def extract_eng(self, *args, **kwargs) -> list[str]:
-        """translatorに渡す事ができる形に抽出する。
-        """
+        """Extract into a form that can be passed to the translator."""
         self.remove_unneeded(*args, **kwargs)
         with open(self.new_txt_file, "rt") as src_file:
             src_text = src_file.read()

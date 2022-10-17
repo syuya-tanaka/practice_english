@@ -1,11 +1,11 @@
+import concurrent.futures
+from concurrent.futures import wait
 from http.client import RemoteDisconnected
 import logging
 import logging.config
 import os
 import queue
 from requests.exceptions import ConnectionError, HTTPError
-import threading
-import time
 from typing import Any, Generator
 from xmlrpc.client import ProtocolError
 
@@ -59,7 +59,6 @@ class Explorer(object):
         #     access_db.
         pass
 
-# TODO Decision_To_InjectDBクラスをPdf_Operatorクラスに継承する。
 # TODO configparserを使用して、DBサーバーとの通信を可能にする。
 # TODO 非同期処理の使用。
 
@@ -97,17 +96,18 @@ class PdfOperator(Explorer):
 
 class TranslateOperator(object):
     """pdfから抽出したデータを翻訳し、DBに注入する"""
-
     def __init__(self, raw_data: list, from_lang: str, to_lang: str) -> None:
         self.raw_data = raw_data
         self.from_lang = from_lang
         self.to_lang = to_lang
         self.word_count = len(self.raw_data)
+        self.thread_count = 0
 
     def _extract_eng_word(self, count: int) -> Generator:
         yield self.raw_data[count]
 
     def trans_eng_to_jpn(self, count: int, queue) -> None:
+        self.thread_count += 1
         for eng_word in self._extract_eng_word(count):
             try:
                 jpn_word = ts.google(eng_word, self.from_lang, self.to_lang)
@@ -125,38 +125,23 @@ class TranslateOperator(object):
         DATA_TO_INJECT_DB[eng_word] = jpn_word
 
     def trans_and_put_in_db_eng_to_jpn(self, queue) -> Any:
-        """英語から日本語に翻訳してDBに入れる。
+        """英語から日本語に翻訳してDBに入れる。"""
+        print('Thread running...')
+        with concurrent.futures.ThreadPoolExecutor(max_workers=300) as executor:
+            futures = [executor.submit(
+                        self.trans_eng_to_jpn,
+                        word_count,
+                        queue
+                        ) for word_count in range(self.word_count)]
 
-        Args:
-            queue: use for enter the data into database.
-        Returns:
-            Any: literally any.
-        """
-        start = time.time()
-        for word_count in range(self.word_count):
-            translate_thread = threading.Thread(target=self.trans_eng_to_jpn,
-                                                args=(word_count, queue))
-            translate_thread.start()
-
+            print('Waiting for tasks to complete...')
+            wait(futures)
             logger.debug({
-                'action': 'translate',
-                'count': word_count,
-                'status': 'run'
-            })
-            if word_count == self.word_count - 1:
-                print('待ちの時間だよ！')
-
-        for thread in threading.enumerate():
-            if thread is threading.currentThread():
-                continue
-            thread.join()
-
-        taken_time = time.time() - start
-        logger.debug({
-                      'DATA_TO_INJECT_DB': DATA_TO_INJECT_DB,
-                      'TAKEN_TIME': taken_time,
-                      'WORD_COUNT': len(DATA_TO_INJECT_DB)
-                    })
+                'data': DATA_TO_INJECT_DB,
+                'length': len(DATA_TO_INJECT_DB),
+                'thread_count': self.thread_count,
+                'status': 'success'
+                })
 
 
 def main() -> None:
