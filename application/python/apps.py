@@ -19,6 +19,10 @@ import logging_conf
 
 INPUT_FILE = 'essential-programming-words.pdf'
 OUTPUT_FILE = 'output.txt'
+START_OF_LINE = 30
+END_OF_LINE = 1004
+FROM_LANG = 'en'
+TO_LANG = 'ja'
 DATA_TO_INJECT_DB: dict = {}
 
 logging.config.dictConfig(logging_conf.LOGGING_CONFIG)
@@ -149,8 +153,8 @@ def main() -> None:
     pdf_operator = PdfOperator()
     pdf_operator.fetch_word()
     raw_data = extract.Extractor(OUTPUT_FILE)
-    formatted_data = raw_data.extract_eng(30, 1004)
-    trans_object = TranslateOperator(formatted_data, 'en', 'ja')
+    formatted_data = raw_data.extract_eng(START_OF_LINE, END_OF_LINE)
+    trans_object = TranslateOperator(formatted_data, FROM_LANG, TO_LANG)
     trans_object.trans_and_put_in_db_eng_to_jpn(queue)
 
 
