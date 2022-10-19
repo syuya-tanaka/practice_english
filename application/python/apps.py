@@ -105,13 +105,13 @@ class TranslateOperator(object):
         self.from_lang = from_lang
         self.to_lang = to_lang
         self.word_count = len(self.raw_data)
-        self.thread_count = 0
+        self.thread_run_count = 0
 
     def _extract_eng_word(self, count: int) -> Generator:
         yield self.raw_data[count]
 
     def trans_eng_to_jpn(self, count: int, queue) -> None:
-        self.thread_count += 1
+        self.thread_run_count += 1
         for eng_word in self._extract_eng_word(count):
             try:
                 jpn_word = ts.google(eng_word, self.from_lang, self.to_lang)
@@ -143,7 +143,7 @@ class TranslateOperator(object):
             logger.debug({
                 'data': DATA_TO_INJECT_DB,
                 'length': len(DATA_TO_INJECT_DB),
-                'thread_count': self.thread_count,
+                'thread_run_count': self.thread_run_count,
                 'status': 'success'
                 })
 
