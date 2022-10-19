@@ -153,7 +153,7 @@ def main() -> None:
     pdf_operator = PdfOperator()
     pdf_operator.fetch_word()
     raw_data = extract.Extractor(OUTPUT_FILE)
-    formatted_data = raw_data.extract_eng(START_OF_LINE, END_OF_LINE)
+    formatted_data = raw_data.exec_extract_eng(START_OF_LINE, END_OF_LINE)
     trans_object = TranslateOperator(formatted_data, FROM_LANG, TO_LANG)
     trans_object.trans_and_put_in_db_eng_to_jpn(queue)
 
