@@ -132,7 +132,7 @@ class PdfOperator(Explorer):
                 END_OF_LINE = int(end_line)
             except ValueError as err:
                 print('数値のみを受け付けます。もう一度入力をしてください。\n', err)
-                PdfOperator.extract_place_determining()
+                return PdfOperator.extract_place_determining()
 
 
 class TranslateOperator(object):
@@ -183,6 +183,7 @@ class TranslateOperator(object):
                 'thread_run_count': self.thread_run_count,
                 'status': 'success'
                 })
+            # TODO マルチスレッドの処理が完了してから、queueを丸々sql.mainに投げる。
 
 
 def main() -> None:
