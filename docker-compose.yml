@@ -13,9 +13,9 @@ services:
     # volumes:
     #   - 'application_data:/var/lib/postgresql/data'
     environment:
-      - POSTGRES_PASSWORD=eng_word
-      - POSTGRES_DB=eng_word
-      - POSTGRES_USER=eng_word
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
       - '~/Shellscripts/reboot_container.sh:/Shellscripts'
     tty: true
     stdin_open: true
