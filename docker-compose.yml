@@ -10,13 +10,14 @@ services:
     container_name: eng_word_db
     ports:
       - '4532:5432'
-    # volumes:
+    volumes:
     #   - 'application_data:/var/lib/postgresql/data'
+      - '~/Shellscripts/reboot_container.sh:/Shellscripts'
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
-      - '~/Shellscripts/reboot_container.sh:/Shellscripts'
+      - TZ=Asia/Tokyo
     tty: true
     stdin_open: true
 
