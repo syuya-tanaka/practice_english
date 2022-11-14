@@ -15,6 +15,7 @@ from pdfminer.layout import LAParams
 
 import extract
 import logging_conf
+from sql import models
 
 
 INPUT_FILE = 'essential-programming-words.pdf'
@@ -52,19 +53,10 @@ class Explorer(object):
                 OUTPUT_FILE = 'output.txt'
 
     @staticmethod
-    # TODO マルチプロセスで作成する。実行順番優先度高め。
-    def explore_db() -> None:
-        """dbの有無を確認し、存在しなければ作成をする。
-
-        Returns:
-            int: 0 or 1
-        """
-        # if not db:
-        #     access_db.
-        pass
-
-# TODO configparserを使用して、DBサーバーとの通信を可能にする。
-# TODO 非同期処理の使用。
+    def is_exist_db() -> None:
+        """dbの有無(テーブル)を確認し、存在しなければ作成する。"""
+        if not models.inspect_db():
+            models.init_db()
 
 
 class PdfOperator(Explorer):
@@ -189,6 +181,7 @@ class TranslateOperator(object):
 def main() -> None:
     # TODO ここ内部、またはどこかで、既にデータが存在する場合の処理も書いておく
     pdf_operator = PdfOperator()
+    pdf_operator.is_exist_db()
     pdf_operator.fetch_word()
     raw_data = extract.Extractor(OUTPUT_FILE)
     pdf_operator.extract_place_determining()
