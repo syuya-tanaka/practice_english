@@ -44,12 +44,22 @@ class Explorer(object):
             None: None
         """
         global OUTPUT_FILE
+        logger.debug({
+            'action': 'find output.txt',
+            'output_file': os.path.exists(OUTPUT_FILE),
+            'status': 'run'
+        })
         is_exist = os.path.exists(OUTPUT_FILE)
         if is_exist:
             return 1
         else:
             with open('output.txt', 'w'):
                 OUTPUT_FILE = 'output.txt'
+        logger.debug({
+            'action': 'find output.txt',
+            'output_file': os.path.exists(OUTPUT_FILE),
+            'status': 'success'
+        })
 
     @staticmethod
     def is_exist_db() -> None:
@@ -57,15 +67,13 @@ class Explorer(object):
         if not models.inspect_db():
             logger.debug({
                 'action': 'create db',
-                'exist': models.inspect_db(),
+                'is_exist_db': models.inspect_db(),
                 'status': 'run'
             })
-
             models.init_db()
-
             logger.debug({
                 'action': 'create db',
-                'exist': models.inspect_db(),
+                'is_exist_db': models.inspect_db(),
                 'status': 'success'
             })
 
@@ -81,23 +89,24 @@ class PdfOperator(Explorer):
 
     def fetch_word(self) -> None:
         if not self.judge:
-            # TODO DBのテーブルなり、データを入れるまでに必要な処理を裏で走らせる処理のfunc()
-            logger.info({
+            logger.debug({
                 'action': 'extract from pdf',
+                'input_file': PdfOperator.input_file,
                 'judge': self.judge,
+                'output_file': os.path.exists(OUTPUT_FILE),
                 'status': 'run'
             })
-
             with open(OUTPUT_FILE, 'wt') as output_file:
                 laparams = LAParams(char_margin=2, line_margin=5)
                 converted_pdf = extract_text(INPUT_FILE, laparams=laparams)
                 output_file.write(converted_pdf)
 
-            logger.info({
+            logger.debug({
                 'action': 'extract from pdf',
+                'input_file': PdfOperator.input_file,
                 'judge': self.judge,
-                'status': 'success',
-                'exist': os.path.exists(OUTPUT_FILE)
+                'output_file': os.path.exists(OUTPUT_FILE),
+                'status': 'success'
             })
 
     @staticmethod
@@ -120,7 +129,13 @@ class PdfOperator(Explorer):
         # is_defaultに"y"もしくは"Y"、"yes"、"Yes"等が入力された場合、デフォルト値を使用する。
         is_default = input('output.txt内のどこからどこまでを抽出したいか入力してください\n'
                            'デフォルトを使用しますか? y/n: ')
-
+        logger.debug({
+            'action': 'input of extraction point',
+            'is_default': is_default,
+            'start_of_line': START_OF_LINE,
+            'end_of_line': END_OF_LINE,
+            'status': 'run'
+        })
         # デフォルトを使用する場合の処理。
         if PdfOperator.input_value_decision(is_default, is_list_yes):
             print(f'開始行: {START_OF_LINE}\n終了行: {END_OF_LINE}')
@@ -137,18 +152,44 @@ class PdfOperator(Explorer):
                 print('数値のみを受け付けます。もう一度入力をしてください。\n', err)
                 return PdfOperator.extract_place_determining()
 
+        logger.debug({
+            'action': 'input of extraction point',
+            'is_default': is_default,
+            'start_of_line': START_OF_LINE,
+            'end_of_line': END_OF_LINE,
+            'status': 'success'
+        })
+
     @staticmethod
     def run() -> Any:
+        global INPUT_FILE
         global OUTPUT_FILE
         global START_OF_LINE
         global END_OF_LINE
-
+        logger.debug({
+            'action': 'execute PdfOperator',
+            'is_exist_db': models.inspect_db(),
+            'input_file': f'{INPUT_FILE} is {os.path.exists(INPUT_FILE)}',
+            'output_file': f'{OUTPUT_FILE} is {os.path.exists(OUTPUT_FILE)}',
+            'start_of_line': START_OF_LINE,
+            'end_of_line': END_OF_LINE,
+            'status': 'run'
+        })
         pdf_operator = PdfOperator()
         pdf_operator.is_exist_db()
         pdf_operator.fetch_word()
         raw_data = extract.Extractor(OUTPUT_FILE)
         pdf_operator.extract_place_determining()
         formatted_data = raw_data.exec_extract_eng(START_OF_LINE, END_OF_LINE)
+        logger.debug({
+            'action': 'execute PdfOperator',
+            'input_file': f'{INPUT_FILE} is {os.path.exists(INPUT_FILE)}',
+            'output_file': f'{OUTPUT_FILE} is {os.path.exists(OUTPUT_FILE)}',
+            'start_of_line': START_OF_LINE,
+            'end_of_line': END_OF_LINE,
+            'formatted_data': formatted_data,
+            'status': 'success'
+        })
         return formatted_data
 
 
@@ -166,6 +207,15 @@ class TranslateOperator(object):
 
     def trans_eng_to_jpn(self, count: int, queue) -> None:
         self.thread_run_count += 1
+        logger.debug({
+            'action': 'translate',
+            'raw_data': isinstance(self.raw_data, list),
+            'from_lang': self.from_lang,
+            'to_lang': self.to_lang,
+            'count': count,
+            'queue': queue,
+            'status': 'run'
+        })
         for eng_word in self._extract_eng_word(count):
             try:
                 jpn_word = ts.google(eng_word, self.from_lang, self.to_lang)
@@ -179,11 +229,27 @@ class TranslateOperator(object):
                 print('Exceeded the daily API usage count today.')
                 break
 
+        logger.debug({
+            'action': 'translate',
+            'raw_data': isinstance(self.raw_data, list),
+            'from_lang': self.from_lang,
+            'to_lang': self.to_lang,
+            'count': count,
+            'queue': queue,
+            'status': 'success'
+        })
+
     def set_eng_jpn_to_dict(self, eng_word, jpn_word) -> None:
         DATA_TO_INJECT_DB[eng_word] = jpn_word
 
     def trans_and_put_in_db_eng_to_jpn(self, queue) -> Any:
         """英語から日本語に翻訳してDBに入れる。"""
+        logger.debug({
+            'data': DATA_TO_INJECT_DB,
+            'length': len(DATA_TO_INJECT_DB),
+            'thread_run_count': self.thread_run_count,
+            'status': 'run'
+        })
         print('Thread running...')
         with concurrent.futures.ThreadPoolExecutor(max_workers=300) as exec:
             futures = [exec.submit(
