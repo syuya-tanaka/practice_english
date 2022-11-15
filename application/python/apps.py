@@ -34,11 +34,7 @@ logger = logging.getLogger('apps')
 
 
 class Explorer(object):
-    """DBにデータを入れるかを判断するクラス。
-
-    Args:
-        object (_type_): _description_ """
-
+    """DBにデータを入れるかを判断するクラス。"""
     @staticmethod
     def explore_data() -> int | None:  # type:ignore
         """output.txtの有無を確認する。
@@ -208,7 +204,6 @@ class TranslateOperator(object):
 
 
 def main() -> None:
-    # pdf_operator = PdfOperator()
     formatted_data = PdfOperator.run()
     trans_object = TranslateOperator(formatted_data, FROM_LANG, TO_LANG)
     trans_object.trans_and_put_in_db_eng_to_jpn(queue)
