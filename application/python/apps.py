@@ -59,7 +59,19 @@ class Explorer(object):
     def is_exist_db() -> None:
         """dbの有無(テーブル)を確認し、存在しなければ作成する。"""
         if not models.inspect_db():
+            logger.debug({
+                'action': 'create db',
+                'exist': models.inspect_db(),
+                'status': 'run'
+            })
+
             models.init_db()
+
+            logger.debug({
+                'action': 'create db',
+                'exist': models.inspect_db(),
+                'status': 'success'
+            })
 
 
 class PdfOperator(Explorer):
@@ -74,7 +86,7 @@ class PdfOperator(Explorer):
     def fetch_word(self) -> None:
         if not self.judge:
             # TODO DBのテーブルなり、データを入れるまでに必要な処理を裏で走らせる処理のfunc()
-            logging.info({
+            logger.info({
                 'action': 'extract from pdf',
                 'judge': self.judge,
                 'status': 'run'
@@ -129,7 +141,8 @@ class PdfOperator(Explorer):
                 print('数値のみを受け付けます。もう一度入力をしてください。\n', err)
                 return PdfOperator.extract_place_determining()
 
-    def run(self) -> Any:
+    @staticmethod
+    def run() -> Any:
         global OUTPUT_FILE
         global START_OF_LINE
         global END_OF_LINE
@@ -195,8 +208,8 @@ class TranslateOperator(object):
 
 
 def main() -> None:
-    pdf_operator = PdfOperator()
-    formatted_data = pdf_operator.run()
+    # pdf_operator = PdfOperator()
+    formatted_data = PdfOperator.run()
     trans_object = TranslateOperator(formatted_data, FROM_LANG, TO_LANG)
     trans_object.trans_and_put_in_db_eng_to_jpn(queue)
 
