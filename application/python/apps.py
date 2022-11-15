@@ -15,6 +15,7 @@ from pdfminer.layout import LAParams
 
 import extract
 import logging_conf
+import path_resolve
 from sql import models
 
 
@@ -126,6 +127,19 @@ class PdfOperator(Explorer):
                 print('数値のみを受け付けます。もう一度入力をしてください。\n', err)
                 return PdfOperator.extract_place_determining()
 
+    def run(self) -> Any:
+        global OUTPUT_FILE
+        global START_OF_LINE
+        global END_OF_LINE
+
+        pdf_operator = PdfOperator()
+        pdf_operator.is_exist_db()
+        pdf_operator.fetch_word()
+        raw_data = extract.Extractor(OUTPUT_FILE)
+        pdf_operator.extract_place_determining()
+        formatted_data = raw_data.exec_extract_eng(START_OF_LINE, END_OF_LINE)
+        return formatted_data
+
 
 class TranslateOperator(object):
     """pdfから抽出したデータを翻訳し、DBに注入する"""
@@ -179,13 +193,8 @@ class TranslateOperator(object):
 
 
 def main() -> None:
-    # TODO ここ内部、またはどこかで、既にデータが存在する場合の処理も書いておく
     pdf_operator = PdfOperator()
-    pdf_operator.is_exist_db()
-    pdf_operator.fetch_word()
-    raw_data = extract.Extractor(OUTPUT_FILE)
-    pdf_operator.extract_place_determining()
-    formatted_data = raw_data.exec_extract_eng(START_OF_LINE, END_OF_LINE)
+    formatted_data = pdf_operator.run()
     trans_object = TranslateOperator(formatted_data, FROM_LANG, TO_LANG)
     trans_object.trans_and_put_in_db_eng_to_jpn(queue)
 
