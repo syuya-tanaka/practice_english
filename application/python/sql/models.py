@@ -6,9 +6,12 @@ from sqlalchemy import inspect
 from sqlalchemy import Integer
 from sqlalchemy import Text
 from sqlalchemy.orm import relationship
-from sqlalchemy.schema import ForeignKey, UniqueConstraint
+from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import UniqueConstraint
 
-from setting import Base, Engine, Session
+from setting import Base
+from setting import Engine
+from setting import Session
 
 
 class EngWord(Base):

@@ -5,8 +5,10 @@ import logging
 import logging.config
 import os
 import queue
-from requests.exceptions import ConnectionError, HTTPError
-from typing import Any, Generator
+from requests.exceptions import ConnectionError
+from requests.exceptions import HTTPError
+from typing import Any
+from typing import Generator
 from xmlrpc.client import ProtocolError
 
 import translators as ts
