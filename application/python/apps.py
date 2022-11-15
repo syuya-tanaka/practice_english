@@ -36,7 +36,7 @@ logger = logging.getLogger('apps')
 class Explorer(object):
     """DBにデータを入れるかを判断するクラス。"""
     @staticmethod
-    def explore_data() -> int | None:  # type:ignore
+    def is_exist_output_file() -> bool | None:  # type:ignore
         """output.txtの有無を確認する。
 
         Returns:
@@ -49,12 +49,8 @@ class Explorer(object):
             'output_file': os.path.exists(OUTPUT_FILE),
             'status': 'run'
         })
-        is_exist = os.path.exists(OUTPUT_FILE)
-        if is_exist:
-            return 1
-        else:
-            with open('output.txt', 'w'):
-                OUTPUT_FILE = 'output.txt'
+        if not os.path.exists(OUTPUT_FILE):
+            return False
         logger.debug({
             'action': 'find output.txt',
             'output_file': os.path.exists(OUTPUT_FILE),
@@ -79,7 +75,7 @@ class Explorer(object):
 
 
 class PdfOperator(Explorer):
-    already_get_data = Explorer.explore_data()
+    already_get_data = Explorer.is_exist_output_file()
     input_file = INPUT_FILE
 
     def __init__(self, file=input_file, judge=already_get_data) -> None:
