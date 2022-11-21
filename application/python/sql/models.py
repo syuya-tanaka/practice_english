@@ -1,4 +1,6 @@
 """A module that defines a table."""
+from contextlib import contextmanager
+
 from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import DateTime
@@ -144,7 +146,19 @@ def delete_db() -> None:
 def inspect_db() -> None:
     inspector = inspect(Engine)
     print(inspector.has_table('eng_words'))
-    print(repr(Engine))
+    return inspector.has_table('eng_words')
+
+
+@contextmanager
+def session_scope():
+    global Session
+    try:
+        yield Session
+        Session.commit()
+    except:
+        Session.rollback()
+    finally:
+        Session.close()
 
 
 if __name__ == '__main__':
