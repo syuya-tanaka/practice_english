@@ -16,7 +16,7 @@ LOGGING_CONFIG = {
             'formatter': 'standard',
             'level': logging.DEBUG
         },
-        'accessDataBaseHandlers': {
+        'modelsHandlers': {
             'class': 'logging.FileHandler',
             'filename': 'log.log',
             'formatter': 'standard',
@@ -40,8 +40,8 @@ LOGGING_CONFIG = {
             # 親のロガーに伝搬させない
             'propagate': 0
         },
-        'access_db': {
-            'handlers': ['accessDataBaseHandlers'],
+        'models': {
+            'handlers': ['modelsHandlers'],
             'level': logging.DEBUG,
             # 親のロガーに伝搬させない
             'propagate': 0,
