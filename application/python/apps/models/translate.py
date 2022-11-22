@@ -1,7 +1,6 @@
 import concurrent.futures
 from concurrent.futures import wait
 from http.client import RemoteDisconnected
-import logging
 import logging.config
 import os
 import queue
@@ -15,26 +14,25 @@ import translators as ts
 from pdfminer.high_level import extract_text
 from pdfminer.layout import LAParams
 
+import base
 import extract
-import logging_conf
-import path_resolve
-from sql import models
+from apps import settings
 
-
-INPUT_FILE = 'essential-programming-words.pdf'
-OUTPUT_FILE = 'output.txt'
+INPUT_FILE = '../../essential-programming-words.pdf'
+OUTPUT_FILE = 'byproduct/output.txt'
 START_OF_LINE = 30
 END_OF_LINE = 1004
 FROM_LANG = 'en'
 TO_LANG = 'ja'
 DATA_TO_INJECT_DB: dict = {}
 
-logging.config.dictConfig(logging_conf.LOGGING_CONFIG)
+logging.config.dictConfig(settings.LOGGING_CONFIG)
 logger = logging.getLogger('apps')
 
 
 class Explorer(object):
     """DBにデータを入れるかを判断するクラス。"""
+
     @staticmethod
     def is_exist_output_file() -> bool | None:  # type:ignore
         """output.txtの有無を確認する。
@@ -60,16 +58,16 @@ class Explorer(object):
     @staticmethod
     def is_exist_db() -> None:
         """dbの有無(テーブル)を確認し、存在しなければ作成する。"""
-        if not models.inspect_db():
+        if not base.inspect_db():
             logger.debug({
                 'action': 'create db',
-                'is_exist_db': models.inspect_db(),
+                'is_exist_db': base.inspect_db(),
                 'status': 'run'
             })
-            models.init_db()
+            base.init_db()
             logger.debug({
                 'action': 'create db',
-                'is_exist_db': models.inspect_db(),
+                'is_exist_db': base.inspect_db(),
                 'status': 'success'
             })
 
@@ -164,7 +162,7 @@ class PdfOperator(Explorer):
         global END_OF_LINE
         logger.debug({
             'action': 'execute PdfOperator',
-            'is_exist_db': models.inspect_db(),
+            'is_exist_db': base.inspect_db(),
             'input_file': f'{INPUT_FILE} is {os.path.exists(INPUT_FILE)}',
             'output_file': f'{OUTPUT_FILE} is {os.path.exists(OUTPUT_FILE)}',
             'start_of_line': START_OF_LINE,
@@ -191,6 +189,7 @@ class PdfOperator(Explorer):
 
 class TranslateOperator(object):
     """pdfから抽出したデータを翻訳し、DBに注入する"""
+
     def __init__(self, raw_data: list, from_lang: str, to_lang: str) -> None:
         self.raw_data = raw_data
         self.from_lang = from_lang
@@ -249,10 +248,10 @@ class TranslateOperator(object):
         print('Thread running...')
         with concurrent.futures.ThreadPoolExecutor(max_workers=300) as exec:
             futures = [exec.submit(
-                        self.trans_eng_to_jpn,
-                        word_count,
-                        queue
-                        ) for word_count in range(self.word_count)]
+                self.trans_eng_to_jpn,
+                word_count,
+                queue
+            ) for word_count in range(self.word_count)]
 
             print('Waiting for tasks to complete...')
             wait(futures)
@@ -261,7 +260,7 @@ class TranslateOperator(object):
                 'length': len(DATA_TO_INJECT_DB),
                 'thread_run_count': self.thread_run_count,
                 'status': 'success'
-                })
+            })
             # TODO マルチスレッドの処理が完了してから、queueを丸々sql.mainに投げる。
 
 

@@ -11,9 +11,9 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.schema import UniqueConstraint
 
-from setting import Base
-from setting import Engine
-from setting import Session
+from apps.settings import Base
+from apps.settings import Engine
+from apps.settings import Session
 
 
 class EngWord(Base):

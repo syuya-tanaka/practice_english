@@ -20,7 +20,7 @@ class Extractor(object):
         end_line = e_line
         count = 0
         extracted_data = ""
-        self.new_txt_file = "extracted_text.txt"
+        self.new_txt_file = "byproduct/extracted_text.txt"
 
         try:
             if not type(start_line) is int or not type(end_line) is int:
