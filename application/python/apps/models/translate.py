@@ -74,18 +74,15 @@ class Explorer(object):
 
 class PdfOperator(Explorer):
     already_get_data = Explorer.is_exist_output_file()
-    input_file = INPUT_FILE
 
-    def __init__(self, file=input_file, judge=already_get_data) -> None:
-        self.file = file
+    def __init__(self, judge=already_get_data) -> None:
         self.judge = judge
-        self.output = OUTPUT_FILE
 
     def fetch_word(self) -> None:
         if not self.judge:
             logger.debug({
                 'action': 'extract from pdf',
-                'input_file': PdfOperator.input_file,
+                'input_file': INPUT_FILE,
                 'judge': self.judge,
                 'output_file': os.path.exists(OUTPUT_FILE),
                 'status': 'run'
@@ -97,7 +94,7 @@ class PdfOperator(Explorer):
 
             logger.debug({
                 'action': 'extract from pdf',
-                'input_file': PdfOperator.input_file,
+                'input_file': INPUT_FILE,
                 'judge': self.judge,
                 'output_file': os.path.exists(OUTPUT_FILE),
                 'status': 'success'
