@@ -6,7 +6,7 @@ __pycache__
 .DS_Store
 output.txt
 extracted_text.txt
-log.log
+log.sql
 .env
 
 
