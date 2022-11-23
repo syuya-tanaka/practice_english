@@ -1,6 +1,7 @@
 essential-programming-words.pdf
 __pycache__
 *.pyc
+.idea
 .mypy_cache
 .DS_Store
 output.txt
