@@ -5,6 +5,7 @@ import re
 class Extractor(object):
     def __init__(self, file: str) -> None:
         self.file = file
+        self.new_txt_file = "byproduct/extracted_text.txt"
 
     def remove_unneeded(self, s_line: int, e_line: int) -> str:
         """Write lines from s_line to e_line to another file.
@@ -20,7 +21,6 @@ class Extractor(object):
         end_line = e_line
         count = 0
         extracted_data = ""
-        self.new_txt_file = "byproduct/extracted_text.txt"
 
         try:
             if not type(start_line) is int or not type(end_line) is int:
@@ -46,7 +46,8 @@ class Extractor(object):
 
         return self.new_txt_file
 
-    def extract_eng(self, file: str) -> list[str]:
+    @staticmethod
+    def extract_eng(file: str) -> list[str]:
         """Extract into a form that can be passed to the translator."""
         with open(file, "rt") as src_file:
             src_text = src_file.read()
