@@ -11,7 +11,6 @@ from xmlrpc.client import ProtocolError
 
 import translators as ts
 
-from apps.models.extract import PdfOperator
 from apps import settings
 
 
@@ -101,13 +100,3 @@ class TranslateOperator(object):
                 'status': 'success'
             })
             # TODO マルチスレッドの処理が完了してから、queueを丸々投げる。
-
-
-def main() -> None:
-    trans_object = TranslateOperator(PdfOperator.run(), FROM_LANG, TO_LANG)
-    trans_object.trans_and_put_in_db_eng_to_jpn(queue)
-
-
-if __name__ == '__main__':
-    # このキューはdatabaseにデータを渡す為に存在する。
-    main()
