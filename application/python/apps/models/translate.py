@@ -22,6 +22,8 @@ DATA_TO_INJECT_DB: dict = {}
 logging.config.dictConfig(settings.LOGGING_CONFIG)
 logger = logging.getLogger('apps')
 
+queue = queue.Queue()
+
 
 class TranslateOperator(object):
     """pdfから抽出したデータを翻訳し、DBに注入する"""
@@ -83,8 +85,8 @@ class TranslateOperator(object):
             'status': 'run'
         })
         print('Thread running...')
-        with concurrent.futures.ThreadPoolExecutor(max_workers=300) as exec:
-            futures = [exec.submit(
+        with concurrent.futures.ThreadPoolExecutor(max_workers=300) as executor:
+            futures = [executor.submit(
                 self.trans_eng_to_jpn,
                 word_count,
                 queue
@@ -108,5 +110,4 @@ def main() -> None:
 
 if __name__ == '__main__':
     # このキューはdatabaseにデータを渡す為に存在する。
-    queue = queue.Queue()
     main()
