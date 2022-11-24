@@ -1,14 +1,9 @@
 import logging
-import os
-import sys
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-
-# パス解決をするために設定。
-sys.path.append(os.path.dirname(__file__))
 
 dialect = 'postgresql'
 driver = 'psycopg2'
