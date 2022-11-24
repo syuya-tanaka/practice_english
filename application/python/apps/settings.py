@@ -39,7 +39,7 @@ LOGGING_CONFIG = {
         },
         'modelsHandlers': {
             'class': 'logging.FileHandler',
-            'filename': 'byproduct/log.sql',
+            'filename': 'apps/models/byproduct/log.sql',
             'formatter': 'standard',
             'level': logging.DEBUG,
         },

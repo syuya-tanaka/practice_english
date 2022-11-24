@@ -7,11 +7,12 @@ from typing import Any
 from pdfminer.high_level import extract_text
 from pdfminer.layout import LAParams
 
-import base
+from apps.models import base
 from apps import settings
 
-INPUT_FILE = '../../essential-programming-words.pdf'
-OUTPUT_FILE = 'byproduct/output.txt'
+
+INPUT_FILE = 'essential-programming-words.pdf'
+OUTPUT_FILE = 'apps/models/byproduct/output.txt'
 START_OF_LINE = 30
 END_OF_LINE = 1004
 
@@ -64,7 +65,7 @@ class Explorer(object):
 class Extractor(Explorer):
     def __init__(self, file: str) -> None:
         self.file = file
-        self.new_txt_file = "byproduct/extracted_text.txt"
+        self.new_txt_file = "apps/models/byproduct/extracted_text.txt"
 
     def remove_unneeded(self, s_line: int, e_line: int) -> str:
         """Write lines from s_line to e_line to another file.

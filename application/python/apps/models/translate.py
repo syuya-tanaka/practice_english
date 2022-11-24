@@ -11,7 +11,7 @@ from xmlrpc.client import ProtocolError
 
 import translators as ts
 
-from extract import PdfOperator
+from apps.models.extract import PdfOperator
 from apps import settings
 
 
