@@ -15,10 +15,12 @@ logger = logging.getLogger('models')
 
 
 def init_db():
+    from apps.models import word
     Base.metadata.create_all(bind=Engine)
 
 
 def delete_db() -> None:
+    from apps.models import word
     Base.metadata.drop_all(bind=Engine)
 
 
@@ -42,9 +44,3 @@ def session_scope():
         session.rollback()
     finally:
         session.close()
-
-
-if __name__ == '__main__':
-    init_db()
-    delete_db()
-    inspect_db()
