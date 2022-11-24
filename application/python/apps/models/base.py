@@ -1,5 +1,6 @@
 """A module that defines a table."""
 from contextlib import contextmanager
+import logging.config
 
 from sqlalchemy import Boolean
 from sqlalchemy import Column
@@ -11,9 +12,14 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.schema import UniqueConstraint
 
+from apps import settings
 from apps.settings import Base
 from apps.settings import Engine
 from apps.settings import Session
+
+
+logging.config.dictConfig(settings.LOGGING_CONFIG)
+logger = logging.getLogger('models')
 
 
 class EngWord(Base):
@@ -145,20 +151,24 @@ def delete_db() -> None:
 
 def inspect_db() -> None:
     inspector = inspect(Engine)
-    print(inspector.has_table('eng_words'))
+    logger.debug({
+        'action': 'inspect',
+        'has_table': inspector.has_table('eng_words')
+    })
     return inspector.has_table('eng_words')
 
 
 @contextmanager
 def session_scope():
-    global Session
+    session = Session()
     try:
-        yield Session
-        Session.commit()
-    except:
-        Session.rollback()
+        yield session
+        session.commit()
+    except Exception as e:
+        logger.warning(f'Occur error. {e}')
+        session.rollback()
     finally:
-        Session.close()
+        session.close()
 
 
 if __name__ == '__main__':
