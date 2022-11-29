@@ -1,7 +1,8 @@
 version: '3'
 # 最終的には、名前付きボリュームは使うが土台を作り上げてから有効にする。
-# volumes:
-#   application_data:
+volumes:
+  application_data_volume:
+    name: application_data
 
 services:
 
@@ -11,7 +12,7 @@ services:
     ports:
       - '4532:5432'
     volumes:
-    #   - 'application_data:/var/lib/postgresql/data'
+      - 'application_data_volume:/var/lib/postgresql/data'
       - '~/Shellscripts/reboot_container.sh:/Shellscripts'
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
