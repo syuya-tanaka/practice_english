@@ -9,6 +9,8 @@ from sqlalchemy.schema import ForeignKey
 from sqlalchemy.schema import UniqueConstraint
 
 from apps.settings import Base
+from apps.models.base import extract_queue
+from apps.models.base import session_scope
 
 
 class EngWord(Base):
@@ -54,16 +56,16 @@ class Answer(Base):
     __table_args__ = (UniqueConstraint("id", name="unique_answer"),)
 
     id = Column(Integer, nullable=False, autoincrement=True, primary_key=True)
-    newest = Column(Boolean)
-    middle = Column(Boolean)
-    oldest = Column(Boolean)
+    newest = Column(Boolean, nullable=True)
+    middle = Column(Boolean, nullable=True)
+    oldest = Column(Boolean, nullable=True)
 
     # 関連付け(親テーブル)
     answer_child = relationship(
         "PracticeWord", back_populates="answer_parent", uselist=False
     )
 
-    def __init__(self, answer: str):
+    def __init__(self, answer: str = None):
         self.answer = answer
 
 
@@ -74,16 +76,16 @@ class AnswerDate(Base):
     __table_args__ = (UniqueConstraint("id", name="unique_date"),)
 
     id = Column(Integer, nullable=False, autoincrement=True, primary_key=True)
-    newest = Column(DateTime)
-    middle = Column(DateTime)
-    oldest = Column(DateTime)
+    newest = Column(DateTime, nullable=True)
+    middle = Column(DateTime, nullable=True)
+    oldest = Column(DateTime, nullable=True)
 
     # 関連付け(親テーブル)
     date_child = relationship(
         "PracticeWord", back_populates="date_parent", uselist=False
     )
 
-    def __init__(self, answer_date: str):
+    def __init__(self, answer_date: str = None):
         self.answer_date = answer_date
 
 
@@ -107,12 +109,12 @@ class PracticeWord(Base):
     answer_id = Column(
         ForeignKey("answers.id", ondelete="CASCADE"),
         name="foreignkey_answer",
-        nullable=False,
+        nullable=True,
     )
     answer_date_id = Column(
         ForeignKey("answer_dates.id", ondelete="CASCADE"),
         name="foreignkey_date",
-        nullable=False,
+        nullable=True,
     )
 
     # 関連付け(子テーブル)
@@ -129,7 +131,27 @@ class PracticeWord(Base):
     # 関連付け(子テーブル)
     date_parent = relationship("AnswerDate", back_populates="date_child")
 
+    def __init__(self, eng, trans, answer=None, date=None):
+        self.eng_parent = EngWord(eng)
+        self.translated_parent = Translated(trans)
+        self.answer_parent = Answer(answer)
+        self.date_parent = AnswerDate(date)
+
     @classmethod
-    def create(cls, eng_word, translated):
-        cls.eng_parent = EngWord(eng_word)
-        cls.translated_parent = Translated(translated)
+    def create(cls, eng, trans, answer=None, date=None):
+        practice_word = PracticeWord(eng, trans, answer, date)
+        with session_scope() as session:
+            session.add(practice_word)
+
+    @classmethod
+    def all_create(cls, queue):
+        # ここにキューから値を取り出して、それら全てをDBに入れる処理を書く。
+        count = (queue.qsize() / 2)
+        while True:
+            count -= 1
+            with session_scope() as session:
+                for eng, trans in extract_queue(queue):
+                    practice_word = PracticeWord(eng, trans)
+                    session.add(practice_word)
+            if not count:
+                break
