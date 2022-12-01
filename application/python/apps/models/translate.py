@@ -99,4 +99,5 @@ class TranslateOperator(object):
                 'thread_run_count': self.thread_run_count,
                 'status': 'success'
             })
-            # TODO マルチスレッドの処理が完了してから、queueを丸々投げる。
+        # マルチスレッドの処理が完了してから、queueを丸々投げる。
+        return queue
