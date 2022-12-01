@@ -1,3 +1,4 @@
+import os
 import logging
 
 from sqlalchemy import create_engine
@@ -23,6 +24,9 @@ Session = sessionmaker(Engine)
 # ORMを実装する際に必要なもの。これを継承してテーブルを作成する。
 Base = declarative_base()
 
+# sqlのログを保存するファイル
+SQL_LOG_FILE = os.path.dirname(__file__) + '/models/byproduct/log.sql'
+
 LOGGING_CONFIG = {
     'version': 1,
     'formatters': {
@@ -39,7 +43,7 @@ LOGGING_CONFIG = {
         },
         'modelsHandlers': {
             'class': 'logging.FileHandler',
-            'filename': 'apps/models/byproduct/log.sql',
+            'filename': SQL_LOG_FILE,
             'formatter': 'standard',
             'level': logging.DEBUG,
         },
