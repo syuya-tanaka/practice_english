@@ -1,5 +1,5 @@
 """A module that defines a table."""
-from contextlib import contextmanager
+import contextlib
 import logging.config
 
 from sqlalchemy import inspect
@@ -19,12 +19,12 @@ def init_db():
     Base.metadata.create_all(bind=Engine)
 
 
-def delete_db() -> None:
+def delete_db():
     from apps.models import word
     Base.metadata.drop_all(bind=Engine)
 
 
-def inspect_db() -> None:
+def inspect_db():
     inspector = inspect(Engine)
     logger.debug({
         'action': 'inspect',
@@ -33,7 +33,14 @@ def inspect_db() -> None:
     return inspector.has_table('eng_words')
 
 
-@contextmanager
+def extract_queue(queue):
+    """get a value from a queue of arguments."""
+    eng_word = queue.get()
+    trans_word = queue.get()
+    yield eng_word, trans_word
+
+
+@contextlib.contextmanager
 def session_scope():
     session = Session()
     try:
