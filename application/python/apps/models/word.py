@@ -1,4 +1,6 @@
 """A module that defines a table."""
+import logging.config
+
 from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import DateTime
@@ -8,9 +10,20 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.schema import UniqueConstraint
 
+from apps import settings
 from apps.settings import Base
-from apps.models.base import extract_queue
-from apps.models.base import session_scope
+from apps.models import base
+
+
+logging.config.dictConfig(settings.LOGGING_CONFIG)
+models_logger = logging.getLogger('models')
+word_logger = logging.getLogger('word')
+
+# queueに入っていた個数
+QUEUE_COUNT = None
+
+# DBに入っているレコード数
+RECORD_COUNT = None
 
 
 class EngWord(Base):
@@ -140,18 +153,68 @@ class PracticeWord(Base):
     @classmethod
     def create(cls, eng, trans, answer=None, date=None):
         practice_word = PracticeWord(eng, trans, answer, date)
-        with session_scope() as session:
+        with base.session_scope() as session:
             session.add(practice_word)
 
     @classmethod
     def all_create(cls, queue):
         # ここにキューから値を取り出して、それら全てをDBに入れる処理を書く。
+        global QUEUE_COUNT
+        QUEUE_COUNT = (queue.qsize() / 2)
+
         count = (queue.qsize() / 2)
         while True:
             count -= 1
-            with session_scope() as session:
-                for eng, trans in extract_queue(queue):
+            with base.session_scope() as session:
+                for eng, trans in base.extract_queue(queue):
                     practice_word = PracticeWord(eng, trans)
                     session.add(practice_word)
             if not count:
                 break
+
+    @classmethod
+    def search_count_in_db(cls):
+        with base.session_scope() as session:
+            result = session.query(PracticeWord).count()
+            return result
+
+    @classmethod
+    def ask_questions(cls, practice_list=None, question_list=None):
+        try_count = int(input('何回挑戦しますか: '))
+        recode_count = base.fetch_record_count(cls)
+        while True:
+            try_count -= 1
+            if try_count < 0:
+                break
+            if practice_list is None and question_list is None:
+                practice_list = []
+                question_list = []
+
+            with base.session_scope() as session:
+                for random_i in base.create_random_num(recode_count):
+                    practice = session.query(cls).get(random_i)
+                    practice_list.append(practice)
+                    if len(practice_list) == 5:
+                        for practice_obj in practice_list:
+                            eng_word = practice_obj.eng_parent.eng_word
+                            translated = practice_obj.translated_parent.translated
+                            question_list.append({
+                                eng_word: translated
+                            })
+
+                        result_bool, answer_obj = base.output_question(practice_list,
+                                                                       question_list)
+                        # Put value in DB based on 'result_bool'.
+                        base.insert_answer_result_in_db(result_bool,
+                                                        answer_obj,
+                                                        practice_list)
+                        word_logger.debug({
+                            'action': 'save input from user',
+                            'eng_word': answer_obj.eng_parent.eng_word,
+                            'answer_date': answer_obj.date_parent.newest,
+                            'answer_parent': answer_obj.answer_parent.newest,
+                            'status': 'success'
+                        })
+                        print('\n')
+                        practice_list, question_list = None, None
+                        break

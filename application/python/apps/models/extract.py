@@ -21,11 +21,11 @@ logger = logging.getLogger('extract')
 
 
 class Explorer(object):
-    """DBにデータを入れるかを判断するクラス。"""
+    """A class that determines whether to put data in the DB."""
 
     @staticmethod
     def is_exist_output_file() -> bool | None:  # type:ignore
-        """output.txtの有無を確認する。
+        """Check for presence of 'output.txt'.
 
         Returns:
             int: 1
@@ -47,7 +47,7 @@ class Explorer(object):
 
     @staticmethod
     def is_exist_db() -> None:
-        """dbの有無(テーブル)を確認し、存在しなければ作成する。"""
+        """Check if there is a DB (table) and create it if it does not exist"""
         if not base.inspect_db():
             logger.debug({
                 'action': 'create db',
@@ -111,14 +111,14 @@ class Extractor(Explorer):
         """Extract into a form that can be passed to the translator."""
         with open(file, "rt") as src_file:
             src_text = src_file.read()
-            processed_file = re.sub("\d", "", src_text)
-            processed_file = re.sub("\W", "", processed_file)
+            processed_file = re.sub(r"\d", "", src_text)
+            processed_file = re.sub(r"\W", "", processed_file)
             processed_file = re.sub("[A-Z]", "", processed_file)
             result_file = re.findall("[a-z]+", processed_file)
             return result_file
 
     def exec_extract_eng(self, s_line: int, e_line: int) -> list[str]:
-        """Whether to process self.file or self.new_txt_file."""
+        """Performs an English-only extraction of relevant parts."""
         result_file = self.remove_unneeded(s_line, e_line)
         if result_file:
             return self.extract_eng(self.new_txt_file)
@@ -134,6 +134,7 @@ class PdfOperator(Extractor):
         self.judge = judge
 
     def fetch_word(self) -> None:
+        """Convert specified pdf characters to text and save to file."""
         if not self.judge:
             logger.debug({
                 'action': 'extract from pdf',
@@ -208,6 +209,7 @@ class PdfOperator(Extractor):
 
     @staticmethod
     def run() -> Any:
+        """Starting point."""
         global INPUT_FILE
         global OUTPUT_FILE
         global START_OF_LINE
@@ -224,9 +226,9 @@ class PdfOperator(Extractor):
         pdf_operator = PdfOperator(OUTPUT_FILE)
         pdf_operator.is_exist_db()
         pdf_operator.fetch_word()
-        # raw_data = Extractor(OUTPUT_FILE)
         pdf_operator.extract_place_determining()
-        formatted_data = pdf_operator.exec_extract_eng(START_OF_LINE, END_OF_LINE)
+        formatted_data = pdf_operator.exec_extract_eng(START_OF_LINE,
+                                                       END_OF_LINE)
         logger.debug({
             'action': 'execute PdfOperator',
             'input_file': f'{INPUT_FILE} is {os.path.exists(INPUT_FILE)}',

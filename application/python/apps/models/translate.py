@@ -1,3 +1,7 @@
+"""
+Convert English words extracted by extract.py into Japanese using
+google translation api.
+"""
 import concurrent.futures
 from concurrent.futures import wait
 from http.client import RemoteDisconnected
@@ -25,7 +29,7 @@ queue = queue.Queue()
 
 
 class TranslateOperator(object):
-    """pdfから抽出したデータを翻訳し、DBに注入する"""
+    """Translate data extracted from pdf and inject into DB."""
 
     def __init__(self, raw_data: list, from_lang: str, to_lang: str) -> None:
         self.raw_data = raw_data
@@ -35,9 +39,12 @@ class TranslateOperator(object):
         self.thread_run_count = 0
 
     def _extract_eng_word(self, count: int) -> Generator:
+        """Extract the value from the list that summarizes
+           the extracted English."""
         yield self.raw_data[count]
 
     def trans_eng_to_jpn(self, count: int, queue) -> None:
+        """Translate using google translation api."""
         self.thread_run_count += 1
         logger.debug({
             'action': 'translate',
@@ -73,10 +80,11 @@ class TranslateOperator(object):
 
     @staticmethod
     def set_eng_jpn_to_dict(eng_word, jpn_word) -> None:
+        """A dictionary to check the values to put in the database."""
         DATA_TO_INJECT_DB[eng_word] = jpn_word
 
     def trans_and_put_in_db_eng_to_jpn(self, queue) -> Any:
-        """英語から日本語に翻訳してDBに入れる。"""
+        """Translate from English to Japanese and put it in the DB."""
         logger.debug({
             'data': DATA_TO_INJECT_DB,
             'length': len(DATA_TO_INJECT_DB),
@@ -99,5 +107,5 @@ class TranslateOperator(object):
                 'thread_run_count': self.thread_run_count,
                 'status': 'success'
             })
-        # マルチスレッドの処理が完了してから、queueを丸々投げる。
+        # Throw the whole queue after the multithreading process is completed.
         return queue
