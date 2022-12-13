@@ -71,5 +71,17 @@ LOGGING_CONFIG = {
             # 親のロガーに伝搬させない
             'propagate': 0,
         },
+        'base': {
+            'handlers': ['defaultHandlers'],
+            'level': logging.DEBUG,
+            # 親のロガーに伝搬させない
+            'propagate': 0
+        },
+        'word': {
+            'handlers': ['defaultHandlers'],
+            'level': logging.DEBUG,
+            # 親のロガーに伝搬させない
+            'propagate': 0
+        },
     }
 }
