@@ -1,5 +1,4 @@
 version: '3'
-# 最終的には、名前付きボリュームは使うが土台を作り上げてから有効にする。
 volumes:
   application_data_volume:
     name: application_data
