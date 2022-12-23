@@ -83,7 +83,7 @@ class TranslateOperator(object):
         """A dictionary to check the values to put in the database."""
         DATA_TO_INJECT_DB[eng_word] = jpn_word
 
-    def trans_and_put_in_db_eng_to_jpn(self, queue) -> Any:
+    def run(self, queue) -> Any:
         """Translate from English to Japanese and put it in the DB."""
         logger.debug({
             'data': DATA_TO_INJECT_DB,

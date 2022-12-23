@@ -11,8 +11,7 @@ def prepare_data():
         trans_object = translate.TranslateOperator(extract.PdfOperator.run(),
                                                    translate.FROM_LANG,
                                                    translate.TO_LANG)
-        fully_queue = trans_object.trans_and_put_in_db_eng_to_jpn(
-                      translate.queue)
+        fully_queue = trans_object.run(translate.queue)
         word.PracticeWord.all_create(fully_queue)
     else:
         word.PracticeWord.ask_questions()
