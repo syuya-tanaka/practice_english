@@ -24,11 +24,11 @@ class Explorer(object):
     """A class that determines whether to put data in the DB."""
 
     @staticmethod
-    def is_exist_output_file() -> bool | None:  # type:ignore
+    def is_exist_output_file() -> bool | None:
         """Check for presence of 'output.txt'.
 
         Returns:
-            int: 1
+            False: Return when file not found.
             None: None
         """
         global OUTPUT_FILE
@@ -165,6 +165,12 @@ class PdfOperator(Extractor):
         return None
 
     @staticmethod
+    def input_extract_range():
+        # extract_rangeに"y"もしくは"Y"、"yes"、"Yes"等が入力された場合、デフォルト値を使用する。
+        return input('output.txt内のどこからどこまでを抽出したいか入力してください\n'
+                     'デフォルトを使用しますか? y/n: ')
+
+    @staticmethod
     def extract_place_determining() -> None:
         """This is where you decide where to finally pull out."""
         global START_OF_LINE
@@ -173,22 +179,20 @@ class PdfOperator(Extractor):
         is_list_yes = ['y', 'yes']
         is_list_no = ['n', 'no']
 
-        # is_defaultに"y"もしくは"Y"、"yes"、"Yes"等が入力された場合、デフォルト値を使用する。
-        is_default = input('output.txt内のどこからどこまでを抽出したいか入力してください\n'
-                           'デフォルトを使用しますか? y/n: ')
+        extract_range = PdfOperator.input_extract_range()
         logger.debug({
             'action': 'input of extraction point',
-            'is_default': is_default,
+            'extract_range': extract_range,
             'start_of_line': START_OF_LINE,
             'end_of_line': END_OF_LINE,
             'status': 'run'
         })
         # デフォルトを使用する場合の処理。
-        if PdfOperator.input_value_decision(is_default, is_list_yes):
+        if PdfOperator.input_value_decision(extract_range, is_list_yes):
             print(f'開始行: {START_OF_LINE}\n終了行: {END_OF_LINE}')
 
         # デフォルト値を使用せず、値を受け付ける場合の処理。
-        if PdfOperator.input_value_decision(is_default, is_list_no):
+        if PdfOperator.input_value_decision(extract_range, is_list_no):
             start_line = input('初めの行数を入力してください: ')
             end_line = input('終わりの行数を入力してください: ')
 
@@ -201,7 +205,7 @@ class PdfOperator(Extractor):
 
         logger.debug({
             'action': 'input of extraction point',
-            'is_default': is_default,
+            'extract_range': extract_range,
             'start_of_line': START_OF_LINE,
             'end_of_line': END_OF_LINE,
             'status': 'success'
