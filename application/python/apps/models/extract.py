@@ -11,7 +11,7 @@ from apps.models import base
 from apps import settings
 
 
-INPUT_FILE = 'essential-programming-words.pdf'
+INPUT_FILE = 'apps/essential-programming-words.pdf'
 OUTPUT_FILE = 'apps/models/byproduct/output.txt'
 START_OF_LINE = 30
 END_OF_LINE = 1004
