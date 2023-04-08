@@ -3,11 +3,21 @@ volumes:
   application_data_volume:
     name: application_data
 
+networks:
+  eng_word_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.0.0/24
+
 services:
 
   db:
     build: ./application/postgresql
     container_name: eng_word_db
+    networks:
+      eng_word_network:
+        ipv4_address: 172.16.0.2
     ports:
       - '4532:5432'
     volumes:
@@ -24,6 +34,9 @@ services:
   python:
     build: ./application/python
     container_name: eng_word_app
+    networks:
+      eng_word_network:
+        ipv4_address: 172.16.0.3
     ports:
       - '8001:8000'
     volumes:
