@@ -13,6 +13,7 @@ def prepare_data():
                                                    translate.TO_LANG)
         fully_queue = trans_object.run(translate.queue)
         word.PracticeWord.all_create(fully_queue)
+        word.PracticeWord.ask_questions()
     else:
         word.PracticeWord.ask_questions()
 
