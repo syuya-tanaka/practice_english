@@ -21,3 +21,4 @@ def prepare_data():
 def redo_db():
     """DB initialization"""
     base.delete_db()
+

@@ -109,3 +109,4 @@ class TranslateOperator(object):
             })
         # Throw the whole queue after the multithreading process is completed.
         return queue
+

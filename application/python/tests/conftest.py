@@ -14,3 +14,4 @@ def pytest_addoption(parser):
 @pytest.fixture
 def input_extract_range(request):
     return request.config.getoption('input_extract_range')
+

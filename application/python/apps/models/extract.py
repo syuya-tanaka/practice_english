@@ -243,3 +243,4 @@ class PdfOperator(Extractor):
             'status': 'success'
         })
         return formatted_data
+

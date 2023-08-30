@@ -233,3 +233,4 @@ def session_scope():
         session.rollback()
     finally:
         session.close()
+

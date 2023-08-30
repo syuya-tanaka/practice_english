@@ -106,3 +106,4 @@ class TestPdfOperator:
                 ['y', 'yes']
             )
             assert actual is None
+

@@ -218,3 +218,4 @@ class PracticeWord(Base):
                         print('\n')
                         practice_list, question_list = None, None
                         break
+

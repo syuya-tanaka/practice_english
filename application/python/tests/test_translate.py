@@ -69,3 +69,4 @@ class TestTranslate:
             for future in futures:
                 actual = future.result()
                 assert actual in TEST_JPN_LIST
+
