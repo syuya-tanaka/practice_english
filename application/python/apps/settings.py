@@ -39,13 +39,13 @@ LOGGING_CONFIG = {
         'defaultHandlers': {
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
-            'level': logging.DEBUG
+            'level': logging.INFO
         },
         'modelsHandlers': {
             'class': 'logging.FileHandler',
             'filename': SQL_LOG_FILE,
             'formatter': 'standard',
-            'level': logging.DEBUG,
+            'level': logging.INFO,
         },
     },
     'root': {
@@ -55,31 +55,31 @@ LOGGING_CONFIG = {
     'loggers': {
         'apps': {
             'handlers': ['defaultHandlers'],
-            'level': logging.DEBUG,
+            'level': logging.INFO,
             # 親のロガーに伝搬させない
             'propagate': 0
         },
         'extract': {
             'handlers': ['defaultHandlers'],
-            'level': logging.DEBUG,
+            'level': logging.INFO,
             # 親のロガーに伝搬させない
             'propagate': 0
         },
         'models': {
             'handlers': ['modelsHandlers'],
-            'level': logging.DEBUG,
+            'level': logging.INFO,
             # 親のロガーに伝搬させない
             'propagate': 0,
         },
         'base': {
             'handlers': ['defaultHandlers'],
-            'level': logging.DEBUG,
+            'level': logging.INFO,
             # 親のロガーに伝搬させない
             'propagate': 0
         },
         'word': {
             'handlers': ['defaultHandlers'],
-            'level': logging.DEBUG,
+            'level': logging.INFO,
             # 親のロガーに伝搬させない
             'propagate': 0
         },
